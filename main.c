@@ -6,13 +6,12 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 15:42:28 by bchanaa           #+#    #+#             */
-/*   Updated: 2023/12/16 18:47:37 by bchanaa          ###   ########.fr       */
+/*   Updated: 2023/12/21 23:45:48 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx.h"
 #include "fdf.h"
-#include <stdio.h>
 
 int	handle_mouse_click(int button, int x, int y, void *p)
 {
@@ -31,31 +30,78 @@ int handle_mouse_move(int x, int y, int *a)
 	return (0);
 }
 
+void	destroy_all(t_data *data)
+{
+	if (data->mlx && data->win)
+		mlx_destroy_window(data->mlx, data->win);
+	free(data->mlx);
+}
+
+int	handle_key_press(int keycode, t_data *data)
+{
+	(void)data;
+	ft_printf("key %d is pressed!\n", keycode);
+	return (0);
+}
+
+int close_window(t_data *data)
+{
+	destroy_all(data);
+	free_2darray((void **)data->map, true);
+	exit(EXIT_SUCCESS);	
+	return (0);
+}
+
+int draw_land(t_data *data)
+{
+	int		i;
+	t_point	**map;
+	t_point	*curr_pt;
+
+	i = 0;
+	ft_printf("drawing land w: %d h: %d\n", data->map_width, data->map_height);
+	init_image(data, WINDOW_WIDTH, WINDOW_HEIGHT);
+	map = data->map;
+	while (map[i])
+	{
+		curr_pt = map[i];
+		if (curr_pt->x < data->map_width - 1)
+			draw_line(data, curr_pt, map[i + 1]);
+		if (curr_pt->y < data->map_height - 1)
+			draw_line(data, curr_pt, map[((curr_pt->y + 1) * data->map_width) + curr_pt->x]);
+		i++;
+	}
+	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
-	void	*p_win;
-	void	*p_mlx;
-	int		a;
+	t_data data;
 
-	a = 1337;
-	(void)argc;
-	(void)argv;
-	p_mlx = mlx_init();
-	if (!p_mlx)
-		return (1);
-	p_win = mlx_new_window(p_mlx, WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
-	if (!p_win)
-		return (1);
-	for (int i=0; i < 50; i++)
+	if (argc < 2)
+		exit_wmsg("Invalid arguments\n");
+	init_data(&data);
+	if (init_window(&data) != 0)
+		return (EXIT_FAILURE);
+	parse_landscape(argv[1], &data);
+	if (!data.map)
 	{
-		for(int j=0; j < 50; j++)
-		{
-			mlx_pixel_put(p_mlx, p_win, 200 + i, 200 + j, 0xFFFFFF);
-		}
+		destroy_all(&data);
+		exit_wmsg("Error when parsing map!");
 	}
-	ft_printf("colored\n");
-	mlx_mouse_hook(p_win, handle_mouse_click, &a);
-	mlx_hook(p_win, 6, 0, handle_mouse_move, &a);
-	mlx_loop(p_mlx);
+	calc_cell_size(&data);
+	//mlx_mouse_hook(data.win, handle_mouse_click, &data);
+	mlx_hook(data.win, 17, 0, close_window, &data);
+	mlx_key_hook(data.win, handle_key_press, &data);
+	draw_land(&data);
+	//mlx_loop_hook(data->mlx, render, &data);
+	mlx_loop(data.mlx);
+
+	// Clearing
+	free_2darray((void **)data.map, true);
+	mlx_destroy_window(data.mlx, data.win);
+	//mlx_destroy_display(data.mlx);
+	free(data.mlx);
 	return (0);
 }
