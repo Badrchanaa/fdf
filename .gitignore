@@ -1,0 +1,5 @@
+fdf
+*.o
+fdftest
+*.a
+.vscode
