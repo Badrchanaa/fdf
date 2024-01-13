@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 15:42:28 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/12 23:19:57 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/13 22:34:29 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,23 @@ int close_window(t_data *data)
 
 int	handle_key_press(int keycode, t_data *data)
 {
+	bool	should_render;
+
+	should_render = true;
 	if (keycode == 53)
 		close_window(data);
-	ft_printf("Keycode: %d\n", keycode);
-	if (keycode >= 123 && keycode <= 126)
-	{
-		translate(data, keycode);
-		draw_land(data);
-	}
-	if (keycode == 34 || keycode == 31 || keycode == 40 || keycode == 37)
-	{
+	else if (keycode >= 123 && keycode <= 126)
+		handle_translate(data, keycode);
+	else if (keycode == 34 || keycode == 31 || keycode == 40 || \
+	 keycode == 37 || keycode == 45 || keycode == 46)
 		handle_rotate(data, keycode);
-		draw_land(data);
-	}
+	else if (keycode == 1)
+		switch_projection(data);
+	else if (keycode == 15)
+		reset_data(data);
+	else
+		should_render = false;
+	render(data);
 	return (0);
 }
 
@@ -70,23 +74,23 @@ void	isometric_projection(t_data *data)
 	int		x;
 	int		y;
 	int		i;
-	int		x_offset;
-	int		y_offset;
+	//int		x_offset;
+	//int		y_offset;
 
-	x_offset = (WIN_H + WIN_W) / 2 -\
-	((WIN_H * data->map_width) + (WIN_H * data->map_height))
-	/ (4 * data->map_height);
-	y_offset = 0; // - ((data->map_width * data->cell_size / 2 + data->map_height * data->cell_size / 2) + (WIN_H / 2));
+	//x_offset = (WIN_H + WIN_W) / 2 -\
+	//((WIN_H * data->map_width) + (WIN_H * data->map_height))
+	/// (4 * data->map_height);
+	//y_offset = 0; // - ((data->map_width * data->cell_size / 2 + data->map_height * data->cell_size / 2) + (WIN_H / 2));
 	i = 0;
 	map = data->map;
 	if (!map)
-		exit_wmsg("Error: isometric projection err\n");
+		exit_wmsg("Error: isometric projection error, map is null.\n");
 	while (map[i])
 	{
 		x = map[i]->x;
 		y = map[i]->y;
-		map[i]->x = (x - y) + x_offset;
-		map[i]->y = (y / 2 + x / 2) - (map[i]->z * 3) + y_offset;
+		map[i]->x = (x - y);
+		map[i]->y = (y / 2 + x / 2) - (map[i]->z * 3);
 		i++;
 	}
 }
@@ -104,18 +108,21 @@ int	main(int argc, char **argv)
 	if (!data.map)
 	{
 		destroy_all(&data);
-		exit_wmsg("Error when parsing map!");
+		exit_wmsg("Error occured when parsing map!\n");
 	}
 	calc_cell_size(&data);
+	ft_printf("Min_z: %d Max_z: %d\n", data.min_z, data.max_z);
 	//isometric_projection(&data);
 	//mlx_mouse_hook(data.win, handle_mouse_click, &data);
+	mlx_do_key_autorepeaton(data.mlx);
 	mlx_hook(data.win, 17, 0, close_window, &data);
-	mlx_key_hook(data.win, handle_key_press, &data);
+	mlx_hook(data.win, 2, 0, handle_key_press, &data);
+	//mlx_key_hook(data.win, handle_key_press, &data);
 	init_image(&data, WIN_W, WIN_H);
 	//mlx_sync(MLX_SYNC_IMAGE_WRITABLE, data.img);
-	draw_land(&data);
+	render(&data);
 	mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);
-	//mlx_loop_hook(data->mlx, render, &data);
+	//mlx_loop_hook(data->mlx, render, &data);~
 	mlx_loop(data.mlx);
 
 	// Clearing

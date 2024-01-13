@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:51:03 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/12 22:51:46 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/13 22:22:09 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,45 +62,53 @@ void	clear_image(t_data *data)
 		j = 0;
 		while (j < WIN_H)
 		{
-			color_image_point(data, i, j, 0);
+			color_image_point(data, i, j, DEFAULT_BGCOLOR);
 			j++;
 		}
 		i++;
 	}
 }
 
-int draw_land(t_data *data)
+int	link_points(t_data *data, t_point *pt, t_point *next_pt)
+{
+	t_point	*tr_pt;
+	t_point	*tr_next_pt;
+
+	//ft_printf("linking points p1->x: %d p1->y: %d | p2->x: %d p2->y: %d\n", pt->x, pt->y, next_pt->x, next_pt->y);
+	tr_pt = transform_point(data, pt);
+	tr_next_pt = transform_point(data, next_pt);
+	if (!tr_pt || !tr_next_pt)
+		return (free(tr_pt), free(tr_next_pt), 1);
+	draw_line(data, tr_pt, tr_next_pt);
+	free(tr_pt);
+	free(tr_next_pt);
+	//ft_printf("all good\n");
+	return (0);
+}
+
+int	render(t_data *data)
 {
 	int		i;
 	t_point	**map;
-	t_point	*curr_pt;
-	t_point	*next_pt;
-	int		x;
-	int		y;
+	int		is_err;
 
 	i = 0;
-	ft_printf("drawing land w: %d h: %d\n", data->map_width, data->map_height);
+	ft_printf("RENDER: w=%d h=%d\n", data->map_width, data->map_height);
 	clear_image(data);
 	map = data->map;
 	while (map[i])
 	{
-		curr_pt = rotate_point(data, map[i]);
-		next_pt = NULL;
-		x = i % data->map_width;
-		y = i / data->map_width;
-		//printf("x: %d y:%d\n", x , y);
-		if (x < data->map_width - 1)
+		if (map[i]->x < data->map_width - 1)
+			is_err = link_points(data, map[i], map[i + 1]);
+		if (is_err)
+			return (1);
+		if (map[i]->y < data->map_height - 1)
 		{
-			next_pt = rotate_point(data, map[i + 1]);
-			draw_line(data, curr_pt, next_pt);
+			//ft_printf("drawland x: %d y: %d\n", map[i]->x, map[i]->y);
+			is_err = link_points(data, map[i], map[((map[i]->y + 1) * data->map_width) + map[i]->x]);
 		}
-		if (y < data->map_height - 1)
-		{
-			next_pt = rotate_point(data, map[((y + 1) * data->map_width) + x]);
-			draw_line(data, curr_pt, next_pt);
-		}
-		free(next_pt);
-		free(curr_pt);
+		if (is_err)
+			return (1);
 		i++;
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);

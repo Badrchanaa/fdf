@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:19:32 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/12 18:24:24 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/13 22:33:36 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ void	free_2darray(void **arr, bool free_root_p)
 
 void	exit_wmsg(const char *msg)
 {
-	perror(msg);
-	exit(EXIT_FAILURE);
+	ft_printf(msg);
+	exit(0);
 }
 
 unsigned int	get_color(t_uc red, t_uc green, t_uc blue, t_uc alpha)

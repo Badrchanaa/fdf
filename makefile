@@ -5,7 +5,7 @@ LIB_INCLUDE = -I /usr/local/include
 MY_INCLUDE = -I./include -I./libft -I/usr/local/include
 LIBDIR = /usr/local/lib
 
-SOURCES = main.c init.c common_utils.c parser.c parse_utils.c draw_utils.c translate.c rot_utils.c
+SOURCES = main.c init.c common_utils.c parser.c parse_utils.c draw_utils.c translate.c rot_utils.c transform_utils.c
 OBJECTS = $(SOURCES:.c=.o)
 
 NAME = fdf

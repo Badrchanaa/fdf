@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:48:16 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/12 22:48:20 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/13 22:44:40 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,27 @@
 
 void	calc_cell_size(t_data *data)
 {
-	double	max_land_height;
-	int		i;
-	t_point	**map;
+	double	max_map_height;
 
-	max_land_height = WIN_H;
-	data->cell_size = (((int)max_land_height) / data->map_height) / 2;
-	i = 0;
-	map = data->map;
-	while (map[i])
-	{
-		map[i]->x = map[i]->x * data->cell_size;
-		map[i]->y = map[i]->y * data->cell_size;
-		i++;
-	}
+	max_map_height = WIN_H;
+	data->cell_size = (((int)max_map_height) / data->map_height) / 2;
 }
 
 void	init_data(t_data *data)
 {
-	data->img = NULL;
-	data->img_addr = NULL;
-	data->mlx = NULL;
-	data->win = NULL;
+	ft_memset(data, 0, sizeof(t_data));
 	data->scale = 1;
-	data->tx = 0;
-	data->angle_x = 0;
-	data->angle_y = 0;
-	data->angle_z = 0;
-	data->ty = 0;
+	data->projection = DEFAULT_PROJECTION;
+	data->cell_size = 1;
+	data->cell_size_z = 1;
+	data->min_z = INT_MAX;
+	data->max_z = INT_MIN;
+}
+
+void	reset_data(t_data *data)
+{
+	data->scale = 1;
+	ft_memset(&data->tx, 0, sizeof(int) * 5);
 }
 
 int	init_window(t_data *data)

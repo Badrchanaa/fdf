@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 18:54:51 by bchanaa           #+#    #+#             */
-/*   Updated: 2023/12/23 17:27:37 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/13 23:42:28 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	_parse_point_color(t_point *point, char *s)
 	return (0);
 }
 
-t_point	*_parse_point(char *s, int x, int y)
+t_point	*_parse_point(char *s, int x, int y, t_data *data)
 {
 	t_point	*point;
 
@@ -49,16 +49,20 @@ t_point	*_parse_point(char *s, int x, int y)
 	}
 	point->x = x;
 	point->y = y;
+	if (data->min_z > point->z)
+		data->min_z = point->z;
+	if (data->max_z < point->z)
+		data->max_z = point->z;
 	return (point);
 }
 
-static int	validate_land_width(t_list *lst, int height)
+static int	get_map_width(t_list *lst, int height)
 {
 	t_list	*curr;
 
 	int		width;
 	int		height_c;
-	
+	int		tmp;
 	width = count_split(lst->content, ' ');
 	height_c = 1;
 	if (!width)
@@ -66,8 +70,9 @@ static int	validate_land_width(t_list *lst, int height)
 	curr = lst->next;
 	while (curr)
 	{
-		if (count_split(curr->content, ' ') != width)
-			return (-1);
+		tmp = count_split(curr->content, ' ');
+		if (tmp > width)
+			width = tmp;
 		curr = curr->next;
 		height_c++;
 	}
@@ -76,12 +81,48 @@ static int	validate_land_width(t_list *lst, int height)
 	return (width);
 }
 
-static int	_populate_matrix(t_list *lst, t_point **matrix, int width)
+int	fill_matrix_line(t_point **matrix, int x, int y, t_data *data)
+{
+	int		i;
+	t_point	*pt;
+
+	i = x;
+	while (i < data->map_width)
+	{
+		
+		pt = malloc(sizeof(t_point));
+		if (!pt)
+			return (1);
+		pt->x = i;
+		pt->y = y;
+		pt->z = INT_MIN;
+		pt->color = C_WHITE;
+		matrix[(data->map_width * y) + i] = pt;
+		i++;
+	}
+	return (0);
+}
+
+void	set_filled_z(t_point **map, t_data *data)
+{
+	int	i;
+	int	medium_z;
+
+	medium_z = (data->max_z + data->min_z) / 2;
+	i = 0;
+	while (map[i])
+	{
+		if (map[i]->z < data->min_z)
+			map[i]->z = medium_z;
+		i++;
+	}
+}
+
+static int	_populate_matrix(t_list *lst, t_point **matrix, t_data *data)
 {
 	int		x;
 	int		y;
 	char	**arr;
-	t_point	*pt;
 
 	x = 0;
 	y = 0;
@@ -93,11 +134,12 @@ static int	_populate_matrix(t_list *lst, t_point **matrix, int width)
 		x = -1;
 		while (arr[++x])
 		{
-			pt = _parse_point(arr[x], x, y);
-			if (!pt)
+			matrix[(data->map_width * y) + x] = _parse_point(arr[x], x, y, data);
+			if (!matrix[(data->map_width * y) + x])
 				return (free_2darray((void **)arr, true), 1);
-			matrix[(width * y) + x] = pt;
 		}
+		if (fill_matrix_line(matrix, x, y, data) != 0)
+			return (free_2darray((void **)arr, true), 1);
 		free_2darray((void **)arr, true);
 		lst = lst->next;
 		y++;
@@ -105,19 +147,20 @@ static int	_populate_matrix(t_list *lst, t_point **matrix, int width)
 	return (0);
 }
 
-t_point	**get_land_matrix(t_list *lst, int height, int *width)
+t_point	**get_map_matrix(t_list *lst, t_data *data)
 {
 	t_point	**matrix;
 
 	if (!lst)
 		return (NULL);
-	*width = validate_land_width(lst, height);
-	if (*width == -1)
+	data->map_width = get_map_width(lst, data->map_height);
+	if (data->map_width == -1)
 		return (NULL);
-	matrix = ft_calloc(sizeof(t_point *), (height * (*width)) + 1);
+	matrix = ft_calloc(sizeof(t_point *), (data->map_height * (data->map_width)) + 1);
 	if (!matrix)
 		return (NULL);
-	if (_populate_matrix(lst, matrix, *width))
+	if (_populate_matrix(lst, matrix, data))
 		return free_2darray((void **)matrix, true), (NULL);
+	set_filled_z(matrix, data);
 	return (matrix);
 }
