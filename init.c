@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:48:16 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/13 22:44:40 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/14 23:47:15 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,24 @@
 
 void	calc_cell_size(t_data *data)
 {
-	double	max_map_height;
-
-	max_map_height = WIN_H;
-	data->cell_size = (((int)max_map_height) / data->map_height) / 2;
+	data->cell_size = (WIN_H / data->map_height) / 2;
+	data->sc_cell_size = data->cell_size * data->scale;
 }
 
-void	init_data(t_data *data)
+int	init_data(t_data *data)
 {
 	ft_memset(data, 0, sizeof(t_data));
+	data->draw_p1 = malloc(sizeof(t_point));
+	data->draw_p2 = malloc(sizeof(t_point));
+	if (!data->draw_p1 || !data->draw_p2)
+		return (free(data->draw_p1), free(data->draw_p2), 1);
 	data->scale = 1;
 	data->projection = DEFAULT_PROJECTION;
 	data->cell_size = 1;
 	data->cell_size_z = 1;
 	data->min_z = INT_MAX;
 	data->max_z = INT_MIN;
+	return (0);
 }
 
 void	reset_data(t_data *data)
