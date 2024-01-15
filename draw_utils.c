@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:51:03 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/14 23:52:19 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/15 21:35:38 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ void	draw_line(t_data *data, t_point *p1, t_point *p2)
 	int		p_color;
 	double	dist;
 
-	i = 0;
-	
+	i = 0;	
 	dx = p2->x - p1->x;
 	dy = p2->y - p1->y;
 	dist = sqrt(pow(dx, 2) + pow(dy, 2));

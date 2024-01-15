@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:19:32 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/13 22:33:36 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/15 19:52:48 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,28 @@ unsigned int get_gradient_color(int color1, int color2, double percentage)
 // !! change so it works for hex colors of size {4, 6, 8} with upper/lower hex base !!
 int	get_color_from_hex(char *hex)
 {
-	const char		*hex_base;
+	const char	*hex_base;
+	char		conv[11];
+	size_t		i;
 
-	hex_base = "0123456789ABCDEF";
-	if (!hex || ft_strspn(hex + 2, hex_base) + 2 != 8 || ft_strncmp(hex, "0x", 2) != 0)
+	if (!hex || ft_strlen(hex) > 10)
 		return (C_WHITE);
-	return ft_atoi_base(hex + 2, hex_base, 16);	
+	i = 0;
+	while (hex[i] && hex[i] != '\n')
+	{
+		conv[i] = ft_toupper(hex[i]);
+		i++;
+	}
+	conv[i] = 0;
+	hex_base = "0123456789ABCDEF";
+	if (ft_strncmp(conv, "0X", 2) != 0 || ft_strspn(conv + 2, hex_base) + 2 != i)
+		return (C_WHITE);
+	return ft_atoi_base(conv + 2, hex_base, 16);	
+}
+
+inline int	abs(int a)
+{
+	if (a >= 0)
+		return (a);
+	return (-a);
 }
