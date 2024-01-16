@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:38:55 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/15 18:11:59 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/16 22:16:46 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	rotate_x(t_point *pt, double sin_a, double cos_a)
 {
-	int	z;
-	int	y;
+	register int	z;
+	register int	y;
 
 	z = pt->z;
 	y = pt->y;
@@ -25,8 +25,8 @@ void	rotate_x(t_point *pt, double sin_a, double cos_a)
 
 void	rotate_y(t_point *pt, double sin_a, double cos_a)
 {
-	int	x;
-	int	z;
+	register int	x;
+	register int	z;
 
 	x = pt->x;
 	z = pt->z;
@@ -36,8 +36,8 @@ void	rotate_y(t_point *pt, double sin_a, double cos_a)
 
 void	rotate_z(t_point *pt, double sin_a, double cos_a)
 {
-	int	x;
-	int	y;
+	register int	x;
+	register int	y;
 
 	x = pt->x;
 	y = pt->y;
@@ -47,9 +47,9 @@ void	rotate_z(t_point *pt, double sin_a, double cos_a)
 
 void	rotate_point(t_data *data, t_point *pt)
 {
-	rotate_x(pt, sin(DEG_TO_RAD(data->angle_x)), cos(DEG_TO_RAD(data->angle_x)));
-	rotate_y(pt, sin(DEG_TO_RAD(data->angle_y)), cos(DEG_TO_RAD(data->angle_y)));
-	rotate_z(pt, sin(DEG_TO_RAD(data->angle_z)), cos(DEG_TO_RAD(data->angle_z)));
+	rotate_z(pt, data->sin_z, data->cos_z);
+	rotate_x(pt, data->sin_x, data->cos_x);
+	rotate_y(pt, data->sin_y, data->cos_y);
 }
 
 int	handle_rotate(t_data *data, int keycode)
@@ -66,6 +66,12 @@ int	handle_rotate(t_data *data, int keycode)
 		data->angle_z -= ANGLE_FACTOR;
 	else if (keycode == 46)
 		data->angle_z += ANGLE_FACTOR;
+	data->cos_x = cos(data->angle_x);
+	data->sin_x = sin(data->angle_x);
+	data->cos_y = cos(data->angle_y);
+	data->sin_y = sin(data->angle_y);
+	data->cos_z = cos(data->angle_z);
+	data->sin_z = sin(data->angle_z);
 	//rotate_map(data);
 	return (0);
 }

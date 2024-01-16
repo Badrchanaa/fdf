@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:51:03 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/15 21:35:38 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/16 22:31:33 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	color_image_point(t_data *data, int x, int y, unsigned int color)
 	char	*pixel;
 	int		pos;
 
-	if (x < INFO_W || y < 0 || x > WIN_W - 1 || y > WIN_H - 1)
+	if (x < 0 || y < 0 || x > WIN_W - 1 || y > WIN_H - 1)
 		return ;
 	pos = y * data->size_line + x * (data->bits_per_pixel / 8);
 	pixel = data->img_addr + pos;
@@ -61,9 +61,6 @@ void	clear_image(t_data *data)
 		j = 0;
 		while (j < WIN_H)
 		{
-			if (i < INFO_W)
-				color_image_point(data, i, j, INFO_BGCOLOR);
-			else
 				color_image_point(data, i, j, DEFAULT_BGCOLOR);
 			j++;
 		}
@@ -92,13 +89,19 @@ void	draw_info(t_data *data)
 	int	y;
 
 	y = INFO_Y;
-	draw_number(data, (y << 16) | INFO_X, data->map_width, "MAP WIDTH: ");
+	draw_number(data, (y << 16) | INFO_X, data->map_width, "MAP WIDTH   : ");
 	y += INFO_Y_INC;
-	draw_number(data, (y << 16) | INFO_X, data->map_height, "MAP HEIGHT: ");
+	draw_number(data, (y << 16) | INFO_X, data->map_height, "MAP HEIGHT  : ");
 	y += INFO_Y_INC;
-	draw_number(data, (y << 16) | INFO_X, data->map_width, "MAP WIDTH: ");
+	draw_number(data, (y << 16) | INFO_X, RAD_TO_DEG(data->angle_x), "X ANGLE : ");
 	y += INFO_Y_INC;
-	draw_number(data, (y << 16) | INFO_X, data->map_width, "MAP WIDTH: ");
+	draw_number(data, (y << 16) | INFO_X, RAD_TO_DEG(data->angle_y), "Y ANGLE : ");
+	y += INFO_Y_INC;
+	draw_number(data, (y << 16) | INFO_X, RAD_TO_DEG(data->angle_z), "Z ANGLE : ");
+	y += INFO_Y_INC;
+	draw_number(data, (y << 16) | INFO_X, data->cell_size_z, "HEIGHT FACTOR : ");
+	y += INFO_Y_INC;
+	draw_number(data, (y << 16) | INFO_X, data->scale, "ZOOM : ");
 	y += INFO_Y_INC;
 }
 
@@ -108,7 +111,7 @@ void	link_points(t_data *data, t_point *pt, t_point *next_pt)
 	ft_memcpy(data->draw_p2, next_pt, sizeof(t_point));
 	transform_point(data, data->draw_p1);
 	transform_point(data, data->draw_p2);
-	draw_line(data, data->draw_p1, data->draw_p2);
+	bline(data, data->draw_p1, data->draw_p2);
 }
 
 int	render(t_data *data)
@@ -117,7 +120,7 @@ int	render(t_data *data)
 	t_point	**map;
 
 	i = 0;
-	ft_printf("RENDER: w=%d h=%d\n", data->map_width, data->map_height);
+	//ft_printf("RENDER: w=%d h=%d\n", data->map_width, data->map_height);
 	clear_image(data);
 	map = data->map;
 	while (map[i])
@@ -129,6 +132,7 @@ int	render(t_data *data)
 		i++;
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	draw_info(data);
 	return (0);
 }
 

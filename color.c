@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   translate.c                                        :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/12 16:46:40 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/16 16:15:02 by bchanaa          ###   ########.fr       */
+/*   Created: 2024/01/16 21:09:17 by bchanaa           #+#    #+#             */
+/*   Updated: 2024/01/16 21:25:45 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	handle_translate(t_data *data, int keycode)
+void	set_color_scheme(t_uc scheme, t_data *data)
 {
-	if (!data)
-		return (1);
-	if (keycode == 123) // Left
-		data->tx += -TR_FACTOR;
-	else if (keycode == 124) // Right
-		data->tx += TR_FACTOR;
-	else if (keycode == 125) // Down
-		data->ty += TR_FACTOR;
-	else if (keycode == 126)
-		data->ty += -TR_FACTOR;
-	return (0);
+	register t_point	**map;
+	int					base_color;
+	int					i;
+	int					range;
+
+	range = data->max_z - data->min_z;
+	base_color = 0x4060ff;
+	if (range == 0)
+		return ;
+	(void)scheme;
+	i = 0;
+	map = data->map;
+	while (map[i])
+	{
+		map[i]->color = get_gradient_color(base_color, C_WHITE, (double)(abs(map[i]->z - data->min_z)) / (data->max_z - data->min_z));
+		i++;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 22:24:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/14 22:35:55 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/16 22:48:06 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	handle_key_press(int keycode, t_data *data)
 {
 	bool	should_render;
 
+	ft_printf("%d\n", keycode);
 	should_render = true;
 	if (keycode == 53)
 		close_window(data);
@@ -28,9 +29,12 @@ int	handle_key_press(int keycode, t_data *data)
 		switch_projection(data);
 	else if (keycode == 15)
 		reset_data(data);
+	else if (keycode == 43)
+		data->sc_cell_size_z = ++data->cell_size_z * data->scale;
 	else
 		should_render = false;
-	render(data);
+	if (should_render)
+		render(data);
 	return (0);
 }
 
@@ -68,6 +72,7 @@ int	handle_mouse_click(int button, int x, int y, t_data *data)
 	if (data->scale != scale)
 	{
 		data->sc_cell_size = data->cell_size * data->scale;
+		data->sc_cell_size_z = data->cell_size_z * data->scale;
 		render(data);
 	}
 	if (button == 1)
@@ -76,7 +81,6 @@ int	handle_mouse_click(int button, int x, int y, t_data *data)
 		data->mouse_x = x;
 		data->mouse_y = y;
 	}
-	ft_printf("%d\n", button);
 	//ft_printf("[%d] x: %d y: %d button: %d.\n", count, x, y, button);
 	return (0);
 }

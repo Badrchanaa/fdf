@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 15:37:36 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/15 17:38:28 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/16 22:46:14 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,22 @@ void	switch_projection(t_data *data)
 		data->projection = ORTHOGRAPHIC;
 	else
 		data->projection = ISOMETRIC;
-	ft_memset(&(data->tx), 0, sizeof(int) * 5); // reset translation and rotation
+	reset_data(data);
 }
 
 void	transform_point(t_data *data, t_point *pt)
 {
-	pt->x = pt->x * data->sc_cell_size;
-	pt->y = pt->y * data->sc_cell_size;
-	pt->z = pt->z * data->cell_size_z;
-	if (data->projection == ISOMETRIC)
-		to_isometric(data, pt);
-	else if (data->projection == ORTHOGRAPHIC)
-	{
-		pt->x -= data->sc_cell_size * data->map_width / 2;
-		pt->y -= data->sc_cell_size * data->map_height / 2;
-	}
+	pt->x = round(pt->x * data->sc_cell_size);
+	pt->y = round(pt->y * data->sc_cell_size);
+	pt->z = round(pt->z * data->sc_cell_size_z);
+	//if (data->projection == ISOMETRIC)
+	// 	to_isometric(data, pt);
+	// else if (data->projection == ORTHOGRAPHIC)
+	// {
+		pt->x -= data->sc_cell_size * (data->map_width - 1) / 2;
+		pt->y -= data->sc_cell_size * (data->map_height - 1) / 2;
+	// }
 	rotate_point(data, pt);
-	translate_point(data, pt);
+	pt->x += WIN_W_MID + data->tx;
+	pt->y += WIN_H_MID + data->ty;
 }

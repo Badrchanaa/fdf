@@ -6,18 +6,25 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 16:47:45 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/15 21:31:51 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/16 17:47:04 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-static inline void	draw_vertical_line(t_data *data, t_point *p1, t_point *p2)
+void	draw_vertical_line(t_data *data, t_point *p1, t_point *p2)
 {
-	int	i;
-	int	dist;
-	int	p_color;
+	int		i;
+	int		dist;
+	int		p_color;
+	t_point	*tmp;
 
+	if (p1->y > p2->y)
+	{
+		tmp = p1;
+		p1 = p2;
+		p2 = tmp;
+	}
 	dist = p1->y - p2->y;
 	i = 0;
 	while (p1->y + i <= p2->y)
@@ -28,12 +35,19 @@ static inline void	draw_vertical_line(t_data *data, t_point *p1, t_point *p2)
 	}
 }
 
-static inline void	draw_horizontal_line(t_data *data, t_point *p1, t_point *p2)
+void	draw_horizontal_line(t_data *data, t_point *p1, t_point *p2)
 {
 	int	i;
 	int	dist;
 	int	p_color;
+	t_point	*tmp;
 
+	if (p1->x > p2->x)
+	{
+		tmp = p1;
+		p1 = p2;
+		p2 = tmp;
+	}
 	dist = p1->x - p2->x;
 	i = 0;
 	while (p1->x + i <= p2->x)
@@ -45,71 +59,78 @@ static inline void	draw_horizontal_line(t_data *data, t_point *p1, t_point *p2)
 	}
 }
 
-static inline void	bdraw_line_high(t_data *data, t_point *p1, t_point *p2)
+void	bdraw_line_high(t_data *data, t_point *p1, t_point *p2)
 {
-	int		x;
-	int		y;
-	int		color;
+	int			x;
+	int			y;
+	int			color;
+	t_line_vars	*v;
 
+	v = data->line_vars;
 	x = p1->x;
 	y = p1->y;
-	data->line_vars.error = 2 * data->line_vars.dx - data->line_vars.dy;
+	v->error = 2 * v->dx - v->dy;
 	if (p2->x < p1->x)
-		data->line_vars.sx = -1;
+		v->sx = -1;
 	else
-		data->line_vars.sx = 1;
+		v->sx = 1;
 	while (y != p2->y)
 	{
-		color = get_gradient_color(p1->color, p2->color, (double)y / data->line_vars.dy);
+		color = get_gradient_color(p1->color, p2->color, (double)y / v->dy);
 		color_image_point(data, x, y, color);
-		if (data->line_vars.error > 0)
+		if (v->error > 0)
 		{
-			data->line_vars.error += 2 * (data->line_vars.dx - data->line_vars.dy);
-			x += data->line_vars.sx;
+			v->error += 2 * (v->dx - v->dy);
+			x += v->sx;
 		}
 		else
-			data->line_vars.error += 2 * data->line_vars.dx;
+			v->error += 2 * v->dx;
 		y++;
 	}	
 }
 
-static inline void	bdraw_line_low(t_data *data, t_point *p1, t_point *p2)
+void	bdraw_line_low(t_data *data, t_point *p1, t_point *p2)
 {
 	int		x;
 	int		y;
 	double	color;
+	t_line_vars	*v;
 
+	v = data->line_vars;
 	x = p1->x;
 	y = p1->y;
-	data->line_vars.error = 2 * data->line_vars.dy - data->line_vars.dx;	
+	v->error = 2 * v->dy - v->dx;	
 	if (p2->y < p1->y)
-		data->line_vars.sy = -1;
+		v->sy = -1;
 	else
-		data->line_vars.sy = 1;
+		v->sy = 1;
 	while (x != p2->x)
 	{
-		color = get_gradient_color(p1->color, p2->color, (double)x / data->line_vars.dx);
+		color = get_gradient_color(p1->color, p2->color, (double)x / v->dx);
 		color_image_point(data, x, y, color);
-		if (data->line_vars.error > 0)
+		if (v->error > 0)
 		{
-			data->line_vars.error += 2 * (data->line_vars.dy - data->line_vars.dx);
-			y += data->line_vars.sy;
+			v->error += 2 * (v->dy - v->dx);
+			y += v->sy;
 		}
 		else
-			data->line_vars.error += 2 * data->line_vars.dy;
+			v->error += 2 * v->dy;
 		x++;
 	}
 }
 
-static inline void	draw_line_helper(t_data *data, t_point *p1, t_point *p2)
+void	draw_line_helper(t_data *data, t_point *p1, t_point *p2)
 {
-	data->line_vars.dx = abs(p2->x - p1->x);
-	data->line_vars.dy = abs(p2->y - p1->y);
+	t_line_vars	*v;
+
+	v = data->line_vars;
+	v->dx = abs(p2->x - p1->x);
+	v->dy = abs(p2->y - p1->y);
 	if (p1->x > p2->x)
-		data->line_vars.sx = -1;
+		v->sx = -1;
 	else
-		data->line_vars.sx = 1;
-	if (data->line_vars.dy < data->line_vars.dx)
+		v->sx = 1;
+	if (v->dy < v->dx)
 	{
 		if (p1->x > p2->x)
 			bdraw_line_low(data, p2, p1);
