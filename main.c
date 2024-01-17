@@ -6,11 +6,30 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 15:42:28 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/16 22:19:49 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/17 22:52:50 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+void	set_index(t_data *data, t_point **map)
+{
+	int	i;
+
+	i = 0;
+	while (map[i])
+	{
+		if (map[i]->x < data->map_width - 1)
+			map[i]->ileft = i + 1;
+		else
+			map[i]->ileft = -1;
+		if (map[i]->y < data->map_height - 1)
+			map[i]->ibottom = ((map[i]->y + 1) * data->map_width) + map[i]->x;
+		else
+			map[i]->ibottom = -1;
+		i++;
+	}
+}
 
 int	main2(int argc, char **argv)
 {
@@ -39,9 +58,14 @@ int	main2(int argc, char **argv)
 	mlx_hook(data.win, 17, 0, close_window, &data);
 	mlx_hook(data.win, 2, 0, handle_key_press, &data);
 	//mlx_key_hook(data.win, handle_key_press, &data);
+
+	set_index(&data, data.map);
+	data.map_w_mid = (data.map_width - 1) / 2;
+	data.map_h_mid = (data.map_height - 1 ) / 2;
 	init_image(&data, WIN_W, WIN_H);
 	//mlx_sync(MLX_SYNC_IMAGE_WRITABLE, data.img);
-	set_color_scheme(1, &data);
+	if (!data.has_color)
+		set_color_scheme(1, &data);
 	
 	render(&data);
 	//mlx_put_image_to_window(data.mlx, data.win, data.img, 0, 0);

@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:03:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/14 18:18:03 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/17 22:52:03 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ t_point	**parse_landscape(char *filename, t_data *data)
 	lst = NULL;
 	while (line)
 	{
+		if (!data->has_color && ft_strnstr(line, ",0x", ft_strlen(line)))
+			data->has_color = 1;
 		ft_lstadd_back(&lst, ft_lstnew(line));
 		(data->map_height)++;
 		line = get_next_line(fd);

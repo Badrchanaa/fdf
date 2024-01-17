@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-static inline void	draw_vertical_line(t_data *data, t_point *p1, t_point *p2)
+void	draw_vertical_line(t_data *data, t_point *p1, t_point *p2)
 {
 	int		i;
 	int		dist;
@@ -35,7 +35,7 @@ static inline void	draw_vertical_line(t_data *data, t_point *p1, t_point *p2)
 	}
 }
 
-static inline void	draw_horizontal_line(t_data *data, t_point *p1, t_point *p2)
+void	draw_horizontal_line(t_data *data, t_point *p1, t_point *p2)
 {
 	int	i;
 	int	dist;
@@ -61,12 +61,12 @@ static inline void	draw_horizontal_line(t_data *data, t_point *p1, t_point *p2)
 
 void	bline(t_data *data, t_point *p1, t_point *p2)
 {
-	t_line_vars			*lv;
-	register int		x;
-	register int		y;
-	int					color;
-	int					e2;
-	bool				should_draw;
+	t_line_vars	*lv;
+	int			x;
+	int			y;
+	int			color;
+	int			e2;
+	bool		should_draw;
 
 	should_draw = false;
 	if (p1->x == p2->x && p1->y == p2->y)

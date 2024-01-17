@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:38:55 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/16 22:16:46 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/17 17:03:16 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,26 @@ void	rotate_z(t_point *pt, double sin_a, double cos_a)
 
 void	rotate_point(t_data *data, t_point *pt)
 {
-	rotate_z(pt, data->sin_z, data->cos_z);
-	rotate_x(pt, data->sin_x, data->cos_x);
-	rotate_y(pt, data->sin_y, data->cos_y);
+	int	x;
+	int	y;
+	int	z;
+
+	x = pt->x;
+	y = pt->y;
+	z = pt->z;
+	pt->y = y * data->cos_x - z * data->sin_x;
+	pt->z = y * data->sin_x + z * data->cos_x;
+	y = pt->y;
+	z = pt->z;
+	pt->x = x * data->cos_y + z * data->sin_y;
+	pt->z = z * data->cos_y - x * data->sin_y;
+	x = pt->x;
+	z = pt->z;
+	pt->x = x * data->cos_z - y * data->sin_z;
+	pt->y = x * data->sin_z + y * data->cos_z;
+	// rotate_z(pt, data->sin_z, data->cos_z);
+	// rotate_x(pt, data->sin_x, data->cos_x);
+	// rotate_y(pt, data->sin_y, data->cos_y);
 }
 
 int	handle_rotate(t_data *data, int keycode)

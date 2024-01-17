@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 22:24:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/16 22:48:06 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/17 21:05:24 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ int	handle_key_press(int keycode, t_data *data)
 		reset_data(data);
 	else if (keycode == 43)
 		data->sc_cell_size_z = ++data->cell_size_z * data->scale;
+	else if (keycode == 47)
+		data->sc_cell_size_z = --data->cell_size_z * data->scale;
 	else
 		should_render = false;
 	if (should_render)

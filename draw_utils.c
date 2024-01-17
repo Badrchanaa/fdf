@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:51:03 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/16 22:31:33 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/17 22:40:49 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	clear_image(t_data *data)
 
 	i = 0;
 	while (i < WIN_W)
-	{	
+	{
 		j = 0;
 		while (j < WIN_H)
 		{
@@ -101,12 +101,25 @@ void	draw_info(t_data *data)
 	y += INFO_Y_INC;
 	draw_number(data, (y << 16) | INFO_X, data->cell_size_z, "HEIGHT FACTOR : ");
 	y += INFO_Y_INC;
-	draw_number(data, (y << 16) | INFO_X, data->scale, "ZOOM : ");
+	draw_number(data, (y << 16) | INFO_X, data->scale * 10, "ZOOM : ");
 	y += INFO_Y_INC;
+}
+void	draw_usage_info(t_data *data)
+{
+	mlx_string_put(data->mlx, data->win, INFO_X, INFO_Y + 210, C_WHITE, "USAGE:");
+	mlx_string_put(data->mlx, data->win, INFO_X, INFO_Y + 242, C_WHITE, "  +/- Height Factor : < >");
+	mlx_string_put(data->mlx, data->win, INFO_X, INFO_Y + 264, C_WHITE, "  Rotate X : I O ");
+	mlx_string_put(data->mlx, data->win, INFO_X, INFO_Y + 286, C_WHITE, "  Rotate Y : K L ");
+	mlx_string_put(data->mlx, data->win, INFO_X, INFO_Y + 308, C_WHITE, "  Rotate Z : N M ");
+	mlx_string_put(data->mlx, data->win, INFO_X, INFO_Y + 330, C_WHITE, "  Switch projection : S");
+	mlx_string_put(data->mlx, data->win, INFO_X, INFO_Y + 352, C_WHITE, "  Reset map : R");
+	mlx_string_put(data->mlx, data->win, INFO_X, INFO_Y + 374, C_WHITE, "  Translate : Left click & drag");
 }
 
 void	link_points(t_data *data, t_point *pt, t_point *next_pt)
 {
+	if (!pt || !next_pt)
+		ft_printf("err %p %p\n", pt, next_pt);
 	ft_memcpy(data->draw_p1, pt, sizeof(t_point));
 	ft_memcpy(data->draw_p2, next_pt, sizeof(t_point));
 	transform_point(data, data->draw_p1);
@@ -118,21 +131,24 @@ int	render(t_data *data)
 {
 	int		i;
 	t_point	**map;
-
+	t_point *pt;
 	i = 0;
 	//ft_printf("RENDER: w=%d h=%d\n", data->map_width, data->map_height);
 	clear_image(data);
 	map = data->map;
 	while (map[i])
 	{
-		if (map[i]->x < data->map_width - 1)
-			link_points(data, map[i], map[i + 1]);
-		if (map[i]->y < data->map_height - 1)
-			link_points(data, map[i], map[((map[i]->y + 1) * data->map_width) + map[i]->x]);
+		pt = map[i];
+		if (pt->ileft != -1)
+			link_points(data, pt, map[pt->ileft]);
+		if (pt->ibottom != -1)
+			// link_points(data, map[i], map[((map[i]->y + 1) * data->map_width) + map[i]->x]);
+			link_points(data, pt, map[pt->ibottom]);
 		i++;
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	draw_info(data);
+	draw_usage_info(data);
 	return (0);
 }
 
