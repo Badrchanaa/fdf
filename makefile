@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -O3
 LIBFLAGS = -lmlx -framework openGL -framework Appkit -lft -L./libft
 LIB_INCLUDE = -I /usr/local/include
 MY_INCLUDE = -I./include -I./libft -I/usr/local/include
@@ -17,7 +17,7 @@ run:
 	./$(NAME)
 
 $(NAME): $(OBJECTS) 
-	$(CC) $(CFLAGS) $(LIB_INCLUDE) $(LIBFLAGS) -L $(LIBDIR) $(OBJECTS) -o $(NAME) -O3
+	$(CC) $(CFLAGS) $(LIB_INCLUDE) $(LIBFLAGS) -L $(LIBDIR) $(OBJECTS) -o $(NAME) -g -fsanitize=address
 
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) $(MY_INCLUDE) -c $< -o $@

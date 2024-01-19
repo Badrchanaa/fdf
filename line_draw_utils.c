@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 16:47:45 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/16 17:47:04 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/18 22:49:51 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	draw_vertical_line(t_data *data, t_point *p1, t_point *p2)
 	i = 0;
 	while (p1->y + i <= p2->y)
 	{
-		p_color = get_gradient_color(p1->color, p2->color, i / (double)dist);
+		p_color = get_gradient_color(p1->color, p2->color, i / (float)dist);
 		color_image_point(data, p1->x, p1->y + i, p_color);
 		i++;
 	}
@@ -53,7 +53,7 @@ void	draw_horizontal_line(t_data *data, t_point *p1, t_point *p2)
 	while (p1->x + i <= p2->x)
 	{
 		
-		p_color = get_gradient_color(p1->color, p2->color, i / (double)dist);
+		p_color = get_gradient_color(p1->color, p2->color, i / (float)dist);
 		color_image_point(data, p1->x + i, p1->y, p_color);
 		i++;
 	}
@@ -76,7 +76,7 @@ void	bdraw_line_high(t_data *data, t_point *p1, t_point *p2)
 		v->sx = 1;
 	while (y != p2->y)
 	{
-		color = get_gradient_color(p1->color, p2->color, (double)y / v->dy);
+		color = get_gradient_color(p1->color, p2->color, (float)y / v->dy);
 		color_image_point(data, x, y, color);
 		if (v->error > 0)
 		{
@@ -93,7 +93,7 @@ void	bdraw_line_low(t_data *data, t_point *p1, t_point *p2)
 {
 	int		x;
 	int		y;
-	double	color;
+	float	color;
 	t_line_vars	*v;
 
 	v = data->line_vars;
@@ -106,7 +106,7 @@ void	bdraw_line_low(t_data *data, t_point *p1, t_point *p2)
 		v->sy = 1;
 	while (x != p2->x)
 	{
-		color = get_gradient_color(p1->color, p2->color, (double)x / v->dx);
+		color = get_gradient_color(p1->color, p2->color, (float)x / v->dx);
 		color_image_point(data, x, y, color);
 		if (v->error > 0)
 		{

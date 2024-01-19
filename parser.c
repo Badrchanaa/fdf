@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:03:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/17 22:52:03 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:00:09 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,53 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-// TODO: handle map_height < 1 or map_width < 1 (SIGFPE on calc_cell_size)
+static int	populate_matrix(t_list *lst, t_point **matrix, t_data *data)
+{
+	int		x;
+	int		y;
+	char	**arr;
+
+	x = 0;
+	y = 0;
+	while (lst)
+	{
+		arr = ft_split(lst->content, ' ');
+		if (!arr)
+			return (1);
+		x = -1;
+		while (arr[++x])
+		{
+			matrix[(data->map_width * y) + x] = parse_point(arr[x], x, y, data);
+			if (!matrix[(data->map_width * y) + x])
+				return (free_2darray((void **)arr, true), 1);
+		}
+		if (fill_matrix_line(matrix, x, y, data) != 0)
+			return (free_2darray((void **)arr, true), 1);
+		free_2darray((void **)arr, true);
+		lst = lst->next;
+		y++;
+	}
+	return (0);
+}
+
+t_point	**get_map_matrix(t_list *lst, t_data *data)
+{
+	t_point	**matrix;
+
+	if (!lst)
+		return (NULL);
+	data->map_width = get_map_width(lst, data->map_height);
+	if (data->map_width == -1)
+		return (NULL);
+	matrix = ft_calloc(sizeof(t_point *), \
+						(data->map_height * (data->map_width)) + 1);
+	if (!matrix)
+		return (NULL);
+	if (populate_matrix(lst, matrix, data))
+		return (free_2darray((void **)matrix, true), (NULL));
+	return (matrix);
+}
+
 t_point	**parse_landscape(char *filename, t_data *data)
 {
 	int		fd;
@@ -37,7 +83,7 @@ t_point	**parse_landscape(char *filename, t_data *data)
 	}
 	data->map = get_map_matrix(lst, data);
 	ft_lstclear(&lst, free);
-	return(data->map);
+	return (data->map);
 }
 
 // int main2()
@@ -64,7 +110,8 @@ t_point	**parse_landscape(char *filename, t_data *data)
 // 		}
 // 		y++;
 // 	}
-// 	printf("total points: %d (bytes: %lu)\n", width * height, sizeof(t_point *) * ( width * height + 1));
+// 	printf("total points: %d (bytes: %lu)\n", width * height, 
+//						sizeof(t_point *) * ( width * height + 1));
 // 	free_2darray((void **)matrix, true);
 // 	return (0);
 // }

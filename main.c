@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 15:42:28 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/17 22:52:50 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 17:09:33 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ void	set_index(t_data *data, t_point **map)
 	while (map[i])
 	{
 		if (map[i]->x < data->map_width - 1)
-			map[i]->ileft = i + 1;
+			map[i]->iright = i + 1;
 		else
-			map[i]->ileft = -1;
+			map[i]->iright = -1;
 		if (map[i]->y < data->map_height - 1)
 			map[i]->ibottom = ((map[i]->y + 1) * data->map_width) + map[i]->x;
 		else
@@ -35,8 +35,8 @@ int	main2(int argc, char **argv)
 {
 	t_data data;
 
-	if (argc < 2)
-		exit_wmsg("Invalid arguments\n");
+	if (argc != 2)
+		exit_wmsg("Invalid args. (usage: ./fdf <map_filename>)\n");
 	if (init_data(&data) == 1)
 		exit_wmsg("Error: Memory allocation failed!\n");
 	if (init_window(&data) != 0)
@@ -62,6 +62,7 @@ int	main2(int argc, char **argv)
 	set_index(&data, data.map);
 	data.map_w_mid = (data.map_width - 1) / 2;
 	data.map_h_mid = (data.map_height - 1 ) / 2;
+	data.map_ratio_mid = (data.map_width + data.map_height) / 2;
 	init_image(&data, WIN_W, WIN_H);
 	//mlx_sync(MLX_SYNC_IMAGE_WRITABLE, data.img);
 	if (!data.has_color)
@@ -74,8 +75,6 @@ int	main2(int argc, char **argv)
 
 	// Clearing
 	free_2darray((void **)data.map, true);
-	free(data.draw_p1);
-	free(data.draw_p2);
 	mlx_destroy_window(data.mlx, data.win);
 	//mlx_destroy_display(data.mlx);
 	free(data.mlx);

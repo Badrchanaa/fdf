@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 22:24:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/17 21:05:24 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 20:43:43 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,14 @@ int	handle_key_press(int keycode, t_data *data)
 	else if (keycode >= 123 && keycode <= 126)
 		handle_translate(data, keycode);
 	else if (keycode == 34 || keycode == 31 || keycode == 40 || \
-	 keycode == 37 || keycode == 45 || keycode == 46)
+			keycode == 37 || keycode == 45 || keycode == 46)
 		handle_rotate(data, keycode);
 	else if (keycode == 1)
 		switch_projection(data);
 	else if (keycode == 15)
 		reset_data(data);
-	else if (keycode == 43)
-		data->sc_cell_size_z = ++data->cell_size_z * data->scale;
-	else if (keycode == 47)
-		data->sc_cell_size_z = --data->cell_size_z * data->scale;
+	else if (keycode == 43 || keycode == 47)
+		handle_height_scale(data, keycode);
 	else
 		should_render = false;
 	if (should_render)
@@ -50,7 +48,7 @@ int	handle_mouse_release(int button, int x, int y, t_data *data)
 	return (0);
 }
 
-int handle_mouse_move(int x, int y, t_data *data)
+int	handle_mouse_move(int x, int y, t_data *data)
 {
 	if (!data->is_dragging)
 		return (0);
@@ -64,7 +62,7 @@ int handle_mouse_move(int x, int y, t_data *data)
 
 int	handle_mouse_click(int button, int x, int y, t_data *data)
 {
-	double	scale;
+	float	scale;
 
 	scale = data->scale;
 	if (button == 5 && scale < 2)
@@ -83,6 +81,5 @@ int	handle_mouse_click(int button, int x, int y, t_data *data)
 		data->mouse_x = x;
 		data->mouse_y = y;
 	}
-	//ft_printf("[%d] x: %d y: %d button: %d.\n", count, x, y, button);
 	return (0);
 }

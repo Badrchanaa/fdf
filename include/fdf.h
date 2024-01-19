@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:14:23 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/16 22:45:53 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:41:29 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <stdio.h>
 # include <stdbool.h>
 # include "math.h"
+
+#include "time.h"
 
 # define WIN_W 1920
 # define WIN_H 1080
@@ -36,10 +38,12 @@
 # define RAD_TO_DEG(r) (r * 180 / M_PI)
 
 # define C_WHITE 0xffffff
+# define C_BLUE 0x4060ff
+# define C_GREEN 0x02d15f
 # define DEFAULT_BGCOLOR 0x212222
 
 # define TR_FACTOR 22
-# define ANGLE_FACTOR (DEG_TO_RAD(2))
+# define ANGLE_FACTOR (DEG_TO_RAD(5))
 # define ZOOM_FACTOR 0.1
 
 # define ISOMETRIC 1
@@ -52,68 +56,62 @@ typedef unsigned char t_uc;
 # define GREEN(c) ((t_uc)((c & 255 << 8) >> 8))
 # define RED(c) ((t_uc)((c & 255 << 16) >> 16))
 
-// # define MALLOC_ERR_MSG "Error: malloc error"
-
 typedef struct s_point
 {
+	int		x;
+	int		y;
 	int		z;
 	int		color;
-	short	x;
-	short	y;
+	int		iright;
+	int		ibottom;
 } t_point;
 
 typedef struct s_line_vars
 {
-	double			percent;
-	int				dx;
-	int				steps;
-	int				steps_i;
-	int				dy;
-	int				sx;
-	int				sy;
-	int				error;
-} t_line_vars;
+	int	coords[2];
+	int	delta[2];
+	int	inc[2];
+	int	err[2];
+	int	steps[2];
+}    t_line_vars;
 
 typedef struct s_data
 {
-	t_line_vars	*line_vars;
 	void		*mlx;
 	void		*win;
 	t_point		**map;
-	t_point		*draw_p1;
-	t_point		*draw_p2;
 	void		*img;
 	char		*img_addr;
-	double		scale;
+	float		scale;
 	int			bits_per_pixel;
 	int			size_line;
 	int			endian;
 	int			map_width;
 	int			map_height;
+	int			map_w_mid;
+	int			map_h_mid;
+	int			map_ratio_mid;
 	int			cell_size;
-	double		sc_cell_size;
-	int			cell_size_z;
-	double		sc_cell_size_z;
+	float		sc_cell_size;
+	float		cell_size_z;
+	float		sc_cell_size_z;
 	int			tx;
 	int			ty;
-	double		angle_x;
-	double		angle_y;
-	double		angle_z;
-	double		cos_x;
-	double		cos_y;
-	double		cos_z;
-	double		sin_x;
-	double		sin_y;
-	double		sin_z;
+	float		angle_x;
+	float		angle_y;
+	float		angle_z;
 	int			min_z;
 	int			max_z;
-	short		mouse_x;
-	short		mouse_y;
+	int			mouse_x;
+	int			mouse_y;
 	bool		projection;
 	bool		is_dragging;
+	bool		has_color;
 } t_data;
 
-t_point			**get_map_matrix(t_list *lst, t_data *data);
+t_point			*parse_point(char *s, int x, int y, t_data *data);
+int				fill_matrix_line(t_point **matrix, int x, int y, t_data *data);
+int				get_map_width(t_list *lst, int height);
 t_point			**parse_landscape(char *filename, t_data *data);
 void			exit_wmsg(const char *msg);
 void			free_2darray(void **arr, bool free_root_p);
@@ -125,19 +123,22 @@ int				get_color_from_hex(char *hex);
 int				count_split(char *str, char c);
 int				init_image(t_data *data, int img_width, int img_height);
 void			calc_cell_size(t_data *data);
-unsigned int	get_gradient_color(int color1, int color2, double percentage);
+unsigned int	get_gradient_color(int color1, int color2, float percentage);
 void			translate_point(t_data *data, t_point *pt);
 int				handle_translate(t_data *data, int keycode);
 int				handle_rotate(t_data *data, int keycode);
-void			rotate_point(t_data *data, t_point *pt);
-void			transform_point(t_data *data, t_point *pt);
+void			handle_height_scale(t_data *data, int keycode);
+t_point			transform_point(t_data *data, t_point *pt);
 void			switch_projection(t_data *data);
 void			reset_data(t_data *data);
 int				close_window(t_data *data);
 void			draw_info(t_data *data);
-void			bline(t_data *data, t_point *p1, t_point *p2);
+void			bline(t_data *data, t_point p1, t_point p2, t_line_vars *v);
+void			rotate_x(int *y, int *z, float *angle);
+void			rotate_y(int *x, int *z, float *angle);
+void			rotate_z(int *x, int *y, float *angle);
 void			draw_line2(t_data *data, t_point *p1, t_point *p2);
-inline int		abs(int a);
+int				abs(int a);
 void			color_image_point(t_data *data, int x, int y, unsigned int color);
 void			set_color_scheme(t_uc scheme, t_data *data);
 // Event handlers

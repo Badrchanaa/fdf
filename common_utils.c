@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:19:32 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/15 19:52:48 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 20:37:26 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,74 +55,7 @@ void	exit_wmsg(const char *msg)
 	exit(0);
 }
 
-unsigned int	get_color(t_uc red, t_uc green, t_uc blue, t_uc alpha)
-{
-	int	color;
-
-	color = blue | (green << 8) | (red << 16) | (alpha << 24);
-	return (color);
-}
-
-// t_uc	get_red(int color)
-// {
-// 	return ((color & (255 << 16)) >> 16);
-// }
-
-// t_uc	get_green(int color)
-// {
-// 	return ((color & (255 << 8)) >> 8);
-// }
-
-// t_uc	get_blue(int color)
-// {
-// 	return (color & 255);
-// }
-
-t_uc	get_channel_gradient(t_uc p1_channel, t_uc p2_channel, double percentage)
-{
-	int	channel_diff;
-
-	channel_diff = p2_channel - p1_channel;
-	return (p1_channel + round(percentage * channel_diff));
-}
-
-unsigned int get_gradient_color(int color1, int color2, double percentage)
-{
-	t_uc	red;
-	t_uc	green;
-	t_uc	blue;
-
-	if (color1 == color2)
-		return (color1);
-	red = get_channel_gradient(RED(color1), RED(color2), percentage);
-	green = get_channel_gradient(GREEN(color1), GREEN(color2), percentage);
-	blue = get_channel_gradient(BLUE(color1), BLUE(color2), percentage);
-	return (get_color(red, green, blue, 0));
-}
-
-// !! change so it works for hex colors of size {4, 6, 8} with upper/lower hex base !!
-int	get_color_from_hex(char *hex)
-{
-	const char	*hex_base;
-	char		conv[11];
-	size_t		i;
-
-	if (!hex || ft_strlen(hex) > 10)
-		return (C_WHITE);
-	i = 0;
-	while (hex[i] && hex[i] != '\n')
-	{
-		conv[i] = ft_toupper(hex[i]);
-		i++;
-	}
-	conv[i] = 0;
-	hex_base = "0123456789ABCDEF";
-	if (ft_strncmp(conv, "0X", 2) != 0 || ft_strspn(conv + 2, hex_base) + 2 != i)
-		return (C_WHITE);
-	return ft_atoi_base(conv + 2, hex_base, 16);	
-}
-
-inline int	abs(int a)
+int	abs(int a)
 {
 	if (a >= 0)
 		return (a);

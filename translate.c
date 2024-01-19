@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 16:46:40 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/16 16:15:02 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:07:12 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ int	handle_translate(t_data *data, int keycode)
 {
 	if (!data)
 		return (1);
-	if (keycode == 123) // Left
+	if (keycode == 123)
 		data->tx += -TR_FACTOR;
-	else if (keycode == 124) // Right
+	else if (keycode == 124)
 		data->tx += TR_FACTOR;
-	else if (keycode == 125) // Down
+	else if (keycode == 125)
 		data->ty += TR_FACTOR;
 	else if (keycode == 126)
 		data->ty += -TR_FACTOR;

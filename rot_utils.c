@@ -6,74 +6,44 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:38:55 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/17 17:03:16 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 20:48:32 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	rotate_x(t_point *pt, double sin_a, double cos_a)
+void	rotate_x(int *y, int *z, float *angle)
 {
-	register int	z;
-	register int	y;
+	int	prev_y;
 
-	z = pt->z;
-	y = pt->y;
-	pt->y = y * cos_a - z * sin_a;
-	pt->z = y * sin_a - z * cos_a;
+	prev_y = *y;
+	*y = prev_y * cos(*angle) - *z * sin(*angle);
+	*z = prev_y * sin(*angle) - *z * cos(*angle);
 }
 
-void	rotate_y(t_point *pt, double sin_a, double cos_a)
+void	rotate_y(int *x, int *z, float *angle)
 {
-	register int	x;
-	register int	z;
+	int	prev_x;
 
-	x = pt->x;
-	z = pt->z;
-	pt->x = x * cos_a + z * sin_a;
-	pt->z = z * cos_a - x * sin_a;
+	prev_x = *x;
+	*x = prev_x * cos(*angle) + *z * sin(*angle);
+	*z = *z * cos(*angle) - prev_x * sin(*angle);
 }
 
-void	rotate_z(t_point *pt, double sin_a, double cos_a)
+void	rotate_z(int *x, int *y, float *angle)
 {
-	register int	x;
-	register int	y;
+	int	prev_x;
 
-	x = pt->x;
-	y = pt->y;
-	pt->x = x * cos_a - y * sin_a;
-	pt->y = x * sin_a + y * cos_a;
-}
-
-void	rotate_point(t_data *data, t_point *pt)
-{
-	int	x;
-	int	y;
-	int	z;
-
-	x = pt->x;
-	y = pt->y;
-	z = pt->z;
-	pt->y = y * data->cos_x - z * data->sin_x;
-	pt->z = y * data->sin_x + z * data->cos_x;
-	y = pt->y;
-	z = pt->z;
-	pt->x = x * data->cos_y + z * data->sin_y;
-	pt->z = z * data->cos_y - x * data->sin_y;
-	x = pt->x;
-	z = pt->z;
-	pt->x = x * data->cos_z - y * data->sin_z;
-	pt->y = x * data->sin_z + y * data->cos_z;
-	// rotate_z(pt, data->sin_z, data->cos_z);
-	// rotate_x(pt, data->sin_x, data->cos_x);
-	// rotate_y(pt, data->sin_y, data->cos_y);
+	prev_x = *x;
+	*x = prev_x * cos(*angle) - *y * sin(*angle);
+	*y = prev_x * sin(*angle) + *y * cos(*angle);
 }
 
 int	handle_rotate(t_data *data, int keycode)
 {
-	if (keycode == 34) // i: decrease angle
+	if (keycode == 34)
 		data->angle_x -= ANGLE_FACTOR;
-	else if (keycode == 31) // o: increase angle
+	else if (keycode == 31)
 		data->angle_x += ANGLE_FACTOR;
 	else if (keycode == 40)
 		data->angle_y -= ANGLE_FACTOR;
@@ -83,12 +53,5 @@ int	handle_rotate(t_data *data, int keycode)
 		data->angle_z -= ANGLE_FACTOR;
 	else if (keycode == 46)
 		data->angle_z += ANGLE_FACTOR;
-	data->cos_x = cos(data->angle_x);
-	data->sin_x = sin(data->angle_x);
-	data->cos_y = cos(data->angle_y);
-	data->sin_y = sin(data->angle_y);
-	data->cos_z = cos(data->angle_z);
-	data->sin_z = sin(data->angle_z);
-	//rotate_map(data);
 	return (0);
 }

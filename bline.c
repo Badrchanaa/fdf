@@ -12,109 +12,44 @@
 
 #include "fdf.h"
 
-void	draw_vertical_line(t_data *data, t_point *p1, t_point *p2)
+void	init_vars(t_point *p1, t_point *p2, t_line_vars *v)
 {
-	int		i;
-	int		dist;
-	int		p_color;
-	t_point	*tmp;
-
-	if (p1->y > p2->y)
-	{
-		tmp = p1;
-		p1 = p2;
-		p2 = tmp;
-	}
-	dist = abs(p1->y - p2->y);
-	i = 0;
-	while (p1->y + i <= p2->y)
-	{
-		p_color = get_gradient_color(p1->color, p2->color, i / (double)dist);
-		color_image_point(data, p1->x, p1->y + i, p_color);
-		i++;
-	}
-}
-
-void	draw_horizontal_line(t_data *data, t_point *p1, t_point *p2)
-{
-	int	i;
-	int	dist;
-	int	p_color;
-	t_point	*tmp;
-
-	if (p1->x > p2->x)
-	{
-		tmp = p1;
-		p1 = p2;
-		p2 = tmp;
-	}
-	dist = abs(p1->x - p2->x);
-	i = 0;
-	while (p1->x + i <= p2->x)
-	{
-		
-		p_color = get_gradient_color(p1->color, p2->color, i / (double)dist);
-		color_image_point(data, p1->x + i, p1->y, p_color);
-		i++;
-	}
-}
-
-void	bline(t_data *data, t_point *p1, t_point *p2)
-{
-	t_line_vars	*lv;
-	int			x;
-	int			y;
-	int			color;
-	int			e2;
-	bool		should_draw;
-
-	should_draw = false;
-	if (p1->x == p2->x && p1->y == p2->y)
-		color_image_point(data, p1->x, p1->y, p1->color);
-	else if (p1->y == p2->y)
-		draw_horizontal_line(data, p1, p2);
-	else if (p1->x == p2->x)
-		draw_vertical_line(data, p1, p2);
-	else
-		should_draw = true;
-	if (!should_draw)
-		return;
-	lv = data->line_vars;
-	lv->dx = abs(p2->x - p1->x);
-	lv->dy = -abs(p2->y - p1->y);
+	v->delta[0] = abs(p2->x - p1->x);
+	v->delta[1] = -abs(p2->y - p1->y);
+	v->inc[0] = -1;
+	v->inc[1] = -1;
 	if (p1->x < p2->x)
-		lv->sx = 1;
-	else
-		lv->sx = -1;
+		v->inc[0] = 1;
 	if (p1->y < p2->y)
-		lv->sy = 1;
-	else
-		lv->sy = -1;
-	lv->error = lv->dx + lv->dy;
-	x = p1->x;
-	y = p1->y;
-	lv->steps = fmax(lv->dx, -lv->dy);
-	lv->steps_i = 0;
-	while (1)
+		v->inc[1] = 1;
+	v->err[0] = v->delta[0] + v->delta[1];
+	v->coords[0] = p1->x;
+	v->coords[1] = p1->y;
+	v->steps[1] = fmax(v->delta[0], -v->delta[1]);
+	v->steps[0] = 0;
+}
+
+void	bline(t_data *data, t_point p1, t_point p2, t_line_vars *v)
+{
+	init_vars(&p1, &p2, v);
+	while (v->coords[0] != p2.x || v->coords[1] != p2.y)
 	{
-		color = get_gradient_color(p1->color, p2->color, (double)lv->steps_i++ / lv->steps);
-		color_image_point(data, x, y, color);
-		if (x == p2->x && y == p2->y)
-			break;
-		e2 = 2 * lv->error;
-		if (e2 >= lv->dy)
+		color_image_point(data, v->coords[0], v->coords[1], \
+		get_gradient_color(p1.color, p2.color, v->steps[0]++ / v->steps[1]));
+		v->err[1] = 2 * v->err[0];
+		if (v->err[1] >= v->delta[1])
 		{
-			if (x == p2->x)
-				break;
-			lv->error += lv->dy;
-			x += lv->sx;
+			if (v->coords[0] == p2.x)
+				break ;
+			v->err[0] += v->delta[1];
+			v->coords[0] += v->inc[0];
 		}
-		if (e2 <= lv->dx)
+		if (v->err[1] <= v->delta[0])
 		{
-			if (y == p2->y)
-				break;
-			lv->error += lv->dx;
-			y += lv->sy;
+			if (v->coords[1] == p2.y)
+				break ;
+			v->err[0] += v->delta[0];
+			v->coords[1] += v->inc[1];
 		}
 	}
 }
