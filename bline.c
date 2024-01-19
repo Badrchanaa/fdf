@@ -12,6 +12,15 @@
 
 #include "fdf.h"
 
+void	color_image_point(t_data *data, int x, int y, unsigned int color)
+{
+	if (x >= 0 && y >= 0 && x < WIN_W && y < WIN_H)
+	{
+		*(unsigned int *)(data->img_addr + y * data->size_line + \
+							x * (data->bits_per_pixel / 8)) = color;
+	}
+}
+
 void	init_vars(t_point *p1, t_point *p2, t_line_vars *v)
 {
 	v->delta[0] = abs(p2->x - p1->x);

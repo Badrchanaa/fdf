@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:48:16 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 18:51:04 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 22:05:49 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,10 @@ int	init_window(t_data *data)
 	return (EXIT_SUCCESS);
 }
 
-int init_image(t_data *data, int img_width, int img_height)
+int	init_image(t_data *data, int img_width, int img_height)
 {
 	data->img = mlx_new_image(data->mlx, img_width, img_height);
-	data->img_addr = mlx_get_data_addr(data->img, &data->bits_per_pixel, &data->size_line, &data->endian);
+	data->img_addr = mlx_get_data_addr(data->img, \
+					&data->bits_per_pixel, &data->size_line, &data->endian);
 	return (0);
 }

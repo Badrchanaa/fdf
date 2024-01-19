@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 15:37:36 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 20:46:21 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:54:51 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	switch_projection(t_data *data)
 }
 
 // Applies all transformations to a point such as rotation, translation and zoom
-t_point	transform_point(t_data *data, t_point *pt)
+t_point	transform(t_data *data, t_point *pt)
 {
 	t_point	npt;
 

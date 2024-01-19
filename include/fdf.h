@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:14:23 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 21:41:29 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 21:54:51 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void			translate_point(t_data *data, t_point *pt);
 int				handle_translate(t_data *data, int keycode);
 int				handle_rotate(t_data *data, int keycode);
 void			handle_height_scale(t_data *data, int keycode);
-t_point			transform_point(t_data *data, t_point *pt);
+t_point			transform(t_data *data, t_point *pt);
 void			switch_projection(t_data *data);
 void			reset_data(t_data *data);
 int				close_window(t_data *data);
