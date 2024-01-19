@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 22:24:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 23:08:17 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:49:11 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	handle_key_press(int keycode, t_data *data)
 {
 	bool	should_render;
 
-	ft_printf("%d\n", keycode);
 	should_render = true;
 	if (keycode == 53)
 		close_window(data);
@@ -56,8 +55,7 @@ int	handle_mouse_move(int x, int y, t_data *data)
 	data->ty -= data->mouse_y - y;
 	data->mouse_x = x;
 	data->mouse_y = y;
-	ft_printf("from mouse move %d\n", data->is_dragging);
-	//render(data);
+	render(data);
 	return (0);
 }
 
@@ -66,9 +64,9 @@ int	handle_mouse_click(int button, int x, int y, t_data *data)
 	float	scale;
 
 	scale = data->scale;
-	if (button == 5 && scale < 2)
+	if (button == 5 && scale < ZOOM_MAX)
 		data->scale += ZOOM_FACTOR;
-	else if (button == 4 && scale > 0.5)
+	else if (button == 4 && scale > ZOOM_MIN)
 		data->scale -= ZOOM_FACTOR;
 	if (data->scale != scale)
 	{

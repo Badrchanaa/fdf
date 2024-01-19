@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:19:32 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 22:35:57 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:45:34 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,9 @@ int	abs(int a)
 	if (a >= 0)
 		return (a);
 	return (-a);
+}
+
+int	rad_to_deg(double rad)
+{
+	return (rad * 180 / M_PI);
 }

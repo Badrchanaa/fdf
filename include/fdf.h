@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:14:23 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 23:05:52 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:51:56 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@
 # define INFO_Y 80
 # define INFO_Y_INC 25
 
-# define DEG_TO_RAD(a) (a * M_PI / 180)
-# define RAD_TO_DEG(r) (r * 180 / M_PI)
+# define ZOOM_MIN 0.5
+# define ZOOM_MAX 3
 
 # define C_WHITE 0xffffff
 # define C_BLUE 0x4060ff
@@ -43,14 +43,15 @@
 # define DEFAULT_BGCOLOR 0x212222
 
 # define TR_FACTOR 22
-# define ANGLE_FACTOR (DEG_TO_RAD(5))
+// 5 Degrees in radian
+# define ANGLE_FACTOR (0.0872665)
 # define ZOOM_FACTOR 0.1
 
 # define ISOMETRIC 1
 # define ORTHOGRAPHIC 0
 # define DEFAULT_PROJECTION ISOMETRIC
 
-typedef unsigned char t_uc;
+typedef unsigned char	t_uc;
 
 # define BLUE(c) ((t_uc)c & 255)
 # define GREEN(c) ((t_uc)((c & 255 << 8) >> 8))
@@ -64,7 +65,7 @@ typedef struct s_point
 	int		color;
 	int		iright;
 	int		ibottom;
-} t_point;
+}				t_point;
 
 typedef struct s_line_vars
 {
@@ -73,7 +74,7 @@ typedef struct s_line_vars
 	int	inc[2];
 	int	err[2];
 	int	steps[2];
-}    t_line_vars;
+}				t_line_vars;
 
 typedef struct s_data
 {
@@ -107,7 +108,7 @@ typedef struct s_data
 	bool		projection;
 	bool		is_dragging;
 	bool		has_color;
-} t_data;
+}				t_data;
 
 t_point			*parse_point(char *s, int x, int y, t_data *data);
 int				fill_matrix_line(t_point **matrix, int x, int y, t_data *data);
@@ -123,7 +124,6 @@ int				count_split(char *str, char c);
 int				init_image(t_data *data, int img_width, int img_height);
 void			calc_cell_size(t_data *data);
 unsigned int	get_gradient_color(int color1, int color2, float percentage);
-void			translate_point(t_data *data, t_point *pt);
 int				handle_translate(t_data *data, int keycode);
 int				handle_rotate(t_data *data, int keycode);
 void			handle_height_scale(t_data *data, int keycode);
@@ -136,7 +136,9 @@ void			rotate_x(int *y, int *z, float *angle);
 void			rotate_y(int *x, int *z, float *angle);
 void			rotate_z(int *x, int *y, float *angle);
 int				abs(int a);
-void			color_image_point(t_data *data, int x, int y, unsigned int color);
+int				rad_to_deg(double rad);
+void			color_image_point(t_data *data, int x, int y, \
+									unsigned int color);
 void			set_color_scheme(t_uc scheme, t_data *data);
 // Event handlers
 int				handle_key_press(int keycode, t_data *data);

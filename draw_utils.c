@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:51:03 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 22:52:59 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:46:12 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,11 @@ void	draw_info(t_data *data)
 	draw_number(data, (105 << 16) | INFO_X, \
 				data->map_height, "MAP HEIGHT  : ");
 	draw_number(data, (130 << 16) | INFO_X, \
-				RAD_TO_DEG(data->angle_x), "X ANGLE : ");
+				rad_to_deg(data->angle_x), "X ANGLE : ");
 	draw_number(data, (155 << 16) | INFO_X, \
-				RAD_TO_DEG(data->angle_y), "Y ANGLE : ");
+				rad_to_deg(data->angle_y), "Y ANGLE : ");
 	draw_number(data, (180 << 16) | INFO_X, \
-				RAD_TO_DEG(data->angle_z), "Z ANGLE : ");
+				rad_to_deg(data->angle_z), "Z ANGLE : ");
 	draw_number(data, (205 << 16) | INFO_X, \
 				data->cell_size_z, "HEIGHT FACTOR : ");
 	draw_number(data, (230 << 16) | INFO_X, \
@@ -93,7 +93,6 @@ int	render(t_data *data)
 	t_line_vars	v;
 
 	i = 0;
-	ft_printf("rendering..\n");
 	clear_image(data);
 	map = data->map;
 	while (map[i])

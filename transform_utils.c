@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/13 15:37:36 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 22:48:26 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:31:51 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ t_point	transform(t_data *data, t_point *pt)
 {
 	t_point	npt;
 
-	if (!pt)
-		exit_wmsg(0, "no point");
 	npt.x = pt->x * data->sc_cell_size;
 	npt.y = pt->y * data->sc_cell_size;
 	npt.z = pt->z * data->sc_cell_size_z;
