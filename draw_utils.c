@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:51:03 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 22:02:58 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 22:52:59 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int	render(t_data *data)
 	t_line_vars	v;
 
 	i = 0;
+	ft_printf("rendering..\n");
 	clear_image(data);
 	map = data->map;
 	while (map[i])

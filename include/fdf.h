@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:14:23 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 21:54:51 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:05:52 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 # include <limits.h>
 # include <stdio.h>
 # include <stdbool.h>
+# include <errno.h>
+# include <string.h>
 # include "math.h"
-
-#include "time.h"
 
 # define WIN_W 1920
 # define WIN_H 1080
@@ -113,9 +113,8 @@ t_point			*parse_point(char *s, int x, int y, t_data *data);
 int				fill_matrix_line(t_point **matrix, int x, int y, t_data *data);
 int				get_map_width(t_list *lst, int height);
 t_point			**parse_landscape(char *filename, t_data *data);
-void			exit_wmsg(const char *msg);
+void			exit_wmsg(int err, char *str);
 void			free_2darray(void **arr, bool free_root_p);
-void			draw_line(t_data *data, t_point *p1, t_point *p2);
 int				render(t_data *data);
 int				init_data(t_data *data);
 int				init_window(t_data *data);
@@ -131,13 +130,11 @@ void			handle_height_scale(t_data *data, int keycode);
 t_point			transform(t_data *data, t_point *pt);
 void			switch_projection(t_data *data);
 void			reset_data(t_data *data);
-int				close_window(t_data *data);
 void			draw_info(t_data *data);
 void			bline(t_data *data, t_point p1, t_point p2, t_line_vars *v);
 void			rotate_x(int *y, int *z, float *angle);
 void			rotate_y(int *x, int *z, float *angle);
 void			rotate_z(int *x, int *y, float *angle);
-void			draw_line2(t_data *data, t_point *p1, t_point *p2);
 int				abs(int a);
 void			color_image_point(t_data *data, int x, int y, unsigned int color);
 void			set_color_scheme(t_uc scheme, t_data *data);
@@ -148,7 +145,6 @@ int				handle_mouse_move(int x, int y, t_data *data);
 int				handle_mouse_release(int button, int x, int y, t_data *data);
 
 // Cleanup functions
-void			free_data(t_data *data);
 void			destroy_all(t_data *data);
 int				close_window(t_data *data);
 #endif

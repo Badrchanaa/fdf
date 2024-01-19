@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 22:24:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 20:43:43 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:08:17 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int	handle_mouse_move(int x, int y, t_data *data)
 	data->ty -= data->mouse_y - y;
 	data->mouse_x = x;
 	data->mouse_y = y;
-	render(data);
+	ft_printf("from mouse move %d\n", data->is_dragging);
+	//render(data);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 15:42:28 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 22:10:44 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 23:00:24 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,18 @@ int	main(int argc, char **argv)
 	t_data data;
 
 	if (argc != 2)
-		exit_wmsg("Invalid args. (usage: ./fdf <map_filename>)\n");
+		exit_wmsg(0, "Invalid args. (usage: ./fdf <map_filename>)");
 	if (init_data(&data) == 1)
-		exit_wmsg("Error: Memory allocation failed!\n");
+		exit_wmsg(errno, "Error: Memory allocation failed!");
 	if (init_window(&data) != 0)
-		return (free_data(&data), EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	parse_landscape(argv[1], &data);
-	//ft_printf("height: %d\n", data.map_height);
 	if (!data.map)
 	{
 		destroy_all(&data);
-		exit_wmsg("Error occured when parsing map!\n");
+		exit_wmsg(errno, "Error occured when parsing map!");
 	}
 	calc_cell_size(&data);
-	// ft_printf("width: %d height: %d min_z: %d Max_z: %d\n", data.map_width, data.map_height, data.min_z, data.max_z);
 	set_hooks(&data);
 	set_map_details(&data, data.map);
 	init_image(&data, WIN_W, WIN_H);
@@ -70,6 +68,7 @@ int	main(int argc, char **argv)
 		set_color_scheme(1, &data);
 	render(&data);
 	mlx_loop(data.mlx);
+	mlx_destroy_image(data.mlx, data.img);
 	free_2darray((void **)data.map, true);
 	mlx_destroy_window(data.mlx, data.win);
 	free(data.mlx);

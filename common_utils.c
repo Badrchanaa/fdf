@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 16:19:32 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 22:05:03 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/19 22:35:57 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,12 @@ void	free_2darray(void **arr, bool free_root_p)
 		free(arr);
 }
 
-void	exit_wmsg(const char *msg)
+void	exit_wmsg(int err, char *str)
 {
-	ft_printf(msg);
+	if (err != 0)
+		perror("Error");
+	else
+		ft_putendl_fd(str, 2);
 	exit(0);
 }
 
