@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cleanup.c                                          :+:      :+:    :+:   */
+/*   misc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:24:09 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 22:24:49 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/20 18:44:11 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,19 @@ int	close_window(t_data *data)
 		free_2darray((void **)data->map, true);
 	exit(EXIT_SUCCESS);
 	return (0);
+}
+
+t_uc	red(unsigned int color)
+{
+	return ((color & 255 << 16) >> 16);
+}
+
+t_uc	green(unsigned int color)
+{
+	return ((color & 255 << 8) >> 8);
+}
+
+t_uc	blue(unsigned int color)
+{
+	return (color & 255);
 }

@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:51:03 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 23:46:12 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/20 19:05:20 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	draw_usage_info(t_data *data)
 	mlx_string_put(data->mlx, data->win, INFO_X, INFO_Y + 352, \
 					C_WHITE, "  Reset map : R");
 	mlx_string_put(data->mlx, data->win, INFO_X, INFO_Y + 374, \
-					C_WHITE, "  Translate : Arrows or Left click & drag");
+					C_WHITE, "  Translate : Arrows / left click");
 }
 
 int	render(t_data *data)
@@ -99,11 +99,11 @@ int	render(t_data *data)
 	{
 		pt = map[i];
 		if (pt->iright != -1)
-			bline(data, transform(data, pt), \
-				transform(data, map[pt->iright]), &v);
+			bline(data, transform(data, pt, &v.p1), \
+				transform(data, map[pt->iright], &v.p2), &v);
 		if (pt->ibottom != -1)
-			bline(data, transform(data, pt), \
-				transform(data, map[pt->ibottom]), &v);
+			bline(data, transform(data, pt, &v.p2), \
+				transform(data, map[pt->ibottom], &v.p1), &v);
 		i++;
 	}
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);

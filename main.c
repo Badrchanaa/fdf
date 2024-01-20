@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 15:42:28 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 23:37:48 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/20 18:36:29 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	set_map_details(t_data *data, t_point **map)
 		i++;
 	}
 	data->map_w_mid = (data->map_width - 1) / 2;
-	data->map_h_mid = (data->map_height - 1 ) / 2;
+	data->map_h_mid = (data->map_height - 1) / 2;
 	data->map_ratio_mid = (data->map_width + data->map_height) / 2;
 }
 
@@ -46,7 +46,7 @@ void	set_hooks(t_data *data)
 
 int	main(int argc, char **argv)
 {
-	t_data data;
+	t_data	data;
 
 	if (argc != 2)
 		exit_wmsg(0, "Invalid args. (usage: ./fdf <map_filename>)");
@@ -58,19 +58,17 @@ int	main(int argc, char **argv)
 	if (!data.map)
 	{
 		destroy_all(&data);
-		exit_wmsg(errno, "Error occured when parsing map!");
+		exit_wmsg(0, "Error: empty or invalid map.");
 	}
 	calc_cell_size(&data);
 	set_hooks(&data);
 	set_map_details(&data, data.map);
 	init_image(&data, WIN_W, WIN_H);
 	if (!data.has_color)
-		set_color_scheme(1, &data);
+		set_map_color(&data);
 	render(&data);
 	mlx_loop(data.mlx);
 	mlx_destroy_image(data.mlx, data.img);
 	free_2darray((void **)data.map, true);
-	mlx_destroy_window(data.mlx, data.win);
-	free(data.mlx);
-	return (0);
+	return (mlx_destroy_window(data.mlx, data.win), free(data.mlx), 0);
 }

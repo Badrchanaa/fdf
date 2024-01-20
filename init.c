@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:48:16 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 23:03:12 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/20 15:57:37 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ int	init_data(t_data *data)
 	data->cell_size_z = 1;
 	data->min_z = INT_MAX;
 	data->max_z = INT_MIN;
+	if (DEFAULT_PROJECTION == ISOMETRIC)
+	{
+		data->angle_x = ISO_ANGLE_X;
+		data->angle_y = ISO_ANGLE_Y;
+		data->angle_z = ISO_ANGLE_Z;
+	}
 	return (0);
 }
 
@@ -42,7 +48,14 @@ void	reset_data(t_data *data)
 	data->scale = 1;
 	calc_cell_size(data);
 	ft_memset(&data->tx, 0, sizeof(int) * 5);
-	ft_memset(&data->angle_x, 0, sizeof(float) * 3);
+	if (data->projection == ISOMETRIC)
+	{
+		data->angle_x = ISO_ANGLE_X;
+		data->angle_y = ISO_ANGLE_Y;
+		data->angle_z = ISO_ANGLE_Z;
+	}
+	else
+		ft_memset(&data->angle_x, 0, sizeof(float) * 3);
 }
 
 int	init_window(t_data *data)

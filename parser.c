@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:03:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 21:00:09 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/20 19:09:20 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ t_point	**parse_landscape(char *filename, t_data *data)
 // 		y++;
 // 	}
 // 	printf("total points: %d (bytes: %lu)\n", width * height, 
-//						sizeof(t_point *) * ( width * height + 1));
+// 						sizeof(t_point *) * ( width * height + 1));
 // 	free_2darray((void **)matrix, true);
 // 	return (0);
 // }

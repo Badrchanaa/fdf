@@ -6,11 +6,26 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 22:24:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 23:49:11 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/20 19:07:02 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+int	handle_translate(t_data *data, int keycode)
+{
+	if (!data)
+		return (1);
+	if (keycode == 123)
+		data->tx += -TR_FACTOR;
+	else if (keycode == 124)
+		data->tx += TR_FACTOR;
+	else if (keycode == 125)
+		data->ty += TR_FACTOR;
+	else if (keycode == 126)
+		data->ty += -TR_FACTOR;
+	return (0);
+}
 
 int	handle_key_press(int keycode, t_data *data)
 {

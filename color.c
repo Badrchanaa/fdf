@@ -6,22 +6,19 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 21:09:17 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 20:36:52 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/20 18:25:24 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	set_color_scheme(t_uc scheme, t_data *data)
+void	set_map_color(t_data *data)
 {
 	t_point	**map;
 	int		i;
-	int		range;
 
-	range = data->max_z - data->min_z;
-	if (range == 0)
+	if (data->max_z - data->min_z == 0)
 		return ;
-	(void)scheme;
 	i = 0;
 	map = data->map;
 	while (map[i])
@@ -50,16 +47,16 @@ t_uc	get_channel_gradient(t_uc p1_channel, t_uc p2_channel, float percentage)
 
 unsigned int	get_gradient_color(int color1, int color2, float percentage)
 {
-	t_uc	red;
-	t_uc	green;
-	t_uc	blue;
+	t_uc	r;
+	t_uc	g;
+	t_uc	b;
 
 	if (color1 == color2)
 		return (color1);
-	red = get_channel_gradient(RED(color1), RED(color2), percentage);
-	green = get_channel_gradient(GREEN(color1), GREEN(color2), percentage);
-	blue = get_channel_gradient(BLUE(color1), BLUE(color2), percentage);
-	return (get_color(red, green, blue, 0));
+	r = get_channel_gradient(red(color1), red(color2), percentage);
+	g = get_channel_gradient(green(color1), green(color2), percentage);
+	b = get_channel_gradient(blue(color1), blue(color2), percentage);
+	return (get_color(r, g, b, 0));
 }
 
 int	get_color_from_hex(char *hex)

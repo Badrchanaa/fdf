@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/12 18:38:55 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 20:48:32 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/20 16:11:52 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	rotate_x(int *y, int *z, float *angle)
 
 	prev_y = *y;
 	*y = prev_y * cos(*angle) - *z * sin(*angle);
-	*z = prev_y * sin(*angle) - *z * cos(*angle);
+	*z = prev_y * sin(*angle) + *z * cos(*angle);
 }
 
 void	rotate_y(int *x, int *z, float *angle)

@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:14:23 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/19 23:51:56 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/20 19:31:33 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,8 @@
 # define WIN_H_MID 540
 # define WINDOW_TITLE "bchanaa's FdF"
 
-# define INFO_W 400
-# define INFO_H WIN_H
 # define INFO_X 35
 # define INFO_Y 80
-# define INFO_Y_INC 25
 
 # define ZOOM_MIN 0.5
 # define ZOOM_MAX 3
@@ -44,7 +41,10 @@
 
 # define TR_FACTOR 22
 // 5 Degrees in radian
-# define ANGLE_FACTOR (0.0872665)
+# define ANGLE_FACTOR 0.0872665
+# define ISO_ANGLE_X 0.872665
+# define ISO_ANGLE_Y 0.698132
+# define ISO_ANGLE_Z 5.8294
 # define ZOOM_FACTOR 0.1
 
 # define ISOMETRIC 1
@@ -52,10 +52,6 @@
 # define DEFAULT_PROJECTION ISOMETRIC
 
 typedef unsigned char	t_uc;
-
-# define BLUE(c) ((t_uc)c & 255)
-# define GREEN(c) ((t_uc)((c & 255 << 8) >> 8))
-# define RED(c) ((t_uc)((c & 255 << 16) >> 16))
 
 typedef struct s_point
 {
@@ -69,12 +65,14 @@ typedef struct s_point
 
 typedef struct s_line_vars
 {
-	int	coords[2];
-	int	delta[2];
-	int	inc[2];
-	int	err[2];
-	int	steps[2];
-}				t_line_vars;
+	t_point	p1;
+	t_point	p2;
+	int		coords[2];
+	int		delta[2];
+	int		inc[2];
+	int		err[2];
+	int		steps[2];
+}			t_line_vars;
 
 typedef struct s_data
 {
@@ -124,14 +122,13 @@ int				count_split(char *str, char c);
 int				init_image(t_data *data, int img_width, int img_height);
 void			calc_cell_size(t_data *data);
 unsigned int	get_gradient_color(int color1, int color2, float percentage);
-int				handle_translate(t_data *data, int keycode);
 int				handle_rotate(t_data *data, int keycode);
 void			handle_height_scale(t_data *data, int keycode);
-t_point			transform(t_data *data, t_point *pt);
+t_point			*transform(t_data *data, t_point *pt, t_point *npt);
 void			switch_projection(t_data *data);
 void			reset_data(t_data *data);
 void			draw_info(t_data *data);
-void			bline(t_data *data, t_point p1, t_point p2, t_line_vars *v);
+void			bline(t_data *data, t_point *p1, t_point *p2, t_line_vars *v);
 void			rotate_x(int *y, int *z, float *angle);
 void			rotate_y(int *x, int *z, float *angle);
 void			rotate_z(int *x, int *y, float *angle);
@@ -139,7 +136,10 @@ int				abs(int a);
 int				rad_to_deg(double rad);
 void			color_image_point(t_data *data, int x, int y, \
 									unsigned int color);
-void			set_color_scheme(t_uc scheme, t_data *data);
+void			set_map_color(t_data *data);
+t_uc			red(unsigned int color);
+t_uc			green(unsigned int color);
+t_uc			blue(unsigned int color);
 // Event handlers
 int				handle_key_press(int keycode, t_data *data);
 int				handle_mouse_click(int button, int x, int y, t_data *data);
