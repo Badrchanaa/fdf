@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:24:09 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/20 18:44:11 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/20 20:33:42 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,5 @@ t_uc	green(unsigned int color)
 
 t_uc	blue(unsigned int color)
 {
-	return (color & 255);
+	return (color);
 }

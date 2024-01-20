@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 15:42:28 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/20 18:36:29 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/20 20:42:12 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,16 @@ int	main(int argc, char **argv)
 	t_data	data;
 
 	if (argc != 2)
-		exit_wmsg(0, "Invalid args. (usage: ./fdf <map_filename>)");
-	if (init_data(&data) == 1)
-		exit_wmsg(errno, "Error: Memory allocation failed!");
-	if (init_window(&data) != 0)
-		return (EXIT_FAILURE);
+		exit_wmsg(0, "fdf: Invalid arguments. (Usage: ./fdf <map_filename>)");
+	init_data(&data);
 	parse_landscape(argv[1], &data);
 	if (!data.map)
 	{
 		destroy_all(&data);
 		exit_wmsg(0, "Error: empty or invalid map.");
 	}
+	if (init_window(&data) != 0)
+		return (EXIT_FAILURE);
 	calc_cell_size(&data);
 	set_hooks(&data);
 	set_map_details(&data, data.map);

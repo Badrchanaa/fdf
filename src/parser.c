@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:03:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/20 19:09:20 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/20 20:38:13 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ t_point	**parse_landscape(char *filename, t_data *data)
 	data->map_height = 0;
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		return (NULL);
+	{
+		perror("fdf");
+		exit(EXIT_FAILURE);
+	}
 	line = get_next_line(fd);
 	lst = NULL;
 	while (line)

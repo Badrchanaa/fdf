@@ -1,9 +1,12 @@
+#! /usr/bin/make
+
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -O3
 LIBFLAGS = -lmlx -framework openGL -framework Appkit -lft -L./libft
 LIB_INCLUDE = -I /usr/local/include
 MY_INCLUDE = -I./include -I./libft
 LIBDIR = /usr/local/lib
+VPATH = src
 
 SOURCES = color.c main.c init.c common_utils.c parser.c parse_utils.c draw_utils.c rot_utils.c transform_utils.c event_handlers.c misc.c bline.c
 OBJECTS = $(SOURCES:.c=.o)
