@@ -60,7 +60,6 @@ char	*ft_strtrim(char const *s1, char const *set)
 	char	*res;
 	int		s_trim;
 	int		e_trim;
-	int		slen;
 
 	if (!s1)
 		return (NULL);
@@ -68,7 +67,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 		return (ft_strdup(s1));
 	s_trim = -1;
 	e_trim = -1;
-	slen = count_trim((char *)s1, (char *)set, &s_trim, &e_trim);
+	count_trim((char *)s1, (char *)set, &s_trim, &e_trim);
 	if (s_trim == -1 || e_trim == -1)
 		res = ft_substr("", 0, 0);
 	else

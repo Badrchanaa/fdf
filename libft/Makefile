@@ -11,8 +11,8 @@ all: $(NAME)
 $(NAME): $(FILES_O)
 	ar -rc $(NAME) $?
 
-.c.o: $(FILES) $(BONUS_FILES)
-	$(CC) $(CFLAGS) -c $< -o $@ -I ./
+#.c.o: $(FILES) $(BONUS_FILES)
+#	$(CC) $(CFLAGS) -c $< -o $@ -I./
 
 bonus: $(BONUS_FILES_O) $(FILES_O)
 	ar -rc $(NAME) $?

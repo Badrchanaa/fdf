@@ -41,17 +41,17 @@ void	rotate_z(int *x, int *y, float *angle)
 
 int	handle_rotate(t_data *data, int keycode)
 {
-	if (keycode == 34)
+	if (keycode == XK_i)
 		data->angle_x -= ANGLE_FACTOR;
-	else if (keycode == 31)
+	else if (keycode == XK_o)
 		data->angle_x += ANGLE_FACTOR;
-	else if (keycode == 40)
+	else if (keycode == XK_k)
 		data->angle_y -= ANGLE_FACTOR;
-	else if (keycode == 37)
+	else if (keycode == XK_l)
 		data->angle_y += ANGLE_FACTOR;
-	else if (keycode == 45)
+	else if (keycode == XK_m)
 		data->angle_z -= ANGLE_FACTOR;
-	else if (keycode == 46)
+	else if (keycode == XK_n)
 		data->angle_z += ANGLE_FACTOR;
 	return (0);
 }

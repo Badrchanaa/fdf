@@ -37,11 +37,11 @@ void	set_map_details(t_data *data, t_point **map)
 void	set_hooks(t_data *data)
 {
 	mlx_mouse_hook(data->win, handle_mouse_click, data);
-	mlx_hook(data->win, 6, 0, handle_mouse_move, data);
-	mlx_hook(data->win, 5, 0, handle_mouse_release, data);
+	mlx_hook(data->win, 6, PointerMotionMask, handle_mouse_move, data);
+	mlx_hook(data->win, 5, ButtonReleaseMask, handle_mouse_release, data);
 	mlx_do_key_autorepeaton(data->mlx);
-	mlx_hook(data->win, 17, 0, close_window, data);
-	mlx_hook(data->win, 2, 0, handle_key_press, data);
+	mlx_hook(data->win, 17, (1L << 17), close_window, data);
+	mlx_hook(data->win, 2, KeyPressMask, handle_key_press, data);
 }
 
 int	main(int argc, char **argv)

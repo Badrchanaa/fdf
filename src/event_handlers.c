@@ -16,34 +16,35 @@ int	handle_translate(t_data *data, int keycode)
 {
 	if (!data)
 		return (1);
-	if (keycode == 123)
+	if (keycode == XK_Left)
 		data->tx += -TR_FACTOR;
-	else if (keycode == 124)
+	else if (keycode == XK_Right)
 		data->tx += TR_FACTOR;
-	else if (keycode == 125)
+	else if (keycode == XK_Down)
 		data->ty += TR_FACTOR;
-	else if (keycode == 126)
+	else if (keycode == XK_Up)
 		data->ty += -TR_FACTOR;
 	return (0);
 }
 
 int	handle_key_press(int keycode, t_data *data)
 {
+	ft_printf("key: %d\n", keycode);
 	bool	should_render;
 
 	should_render = true;
-	if (keycode == 53)
+	if (keycode == XK_Escape)
 		close_window(data);
-	else if (keycode >= 123 && keycode <= 126)
+	else if (keycode == XK_Right || keycode == XK_Left || keycode == XK_Up || keycode == XK_Down)
 		handle_translate(data, keycode);
-	else if (keycode == 34 || keycode == 31 || keycode == 40 || \
-			keycode == 37 || keycode == 45 || keycode == 46)
+	else if (keycode == XK_o || keycode == XK_i || keycode == XK_k || \
+			keycode == XK_l || keycode == XK_n || keycode == XK_m)
 		handle_rotate(data, keycode);
-	else if (keycode == 1)
+	else if (keycode == XK_s)
 		switch_projection(data);
-	else if (keycode == 15)
+	else if (keycode == XK_r)
 		reset_data(data);
-	else if (keycode == 43 || keycode == 47)
+	else if (keycode == XK_less || keycode == XK_greater)
 		handle_height_scale(data, keycode);
 	else
 		should_render = false;

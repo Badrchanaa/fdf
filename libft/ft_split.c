@@ -105,11 +105,9 @@ char	**ft_split(char *str, char c)
 {
 	char	**arr;
 	int		i;
-	int		start_i;
 	int		j;
 
 	i = 0;
-	start_i = 0;
 	if (!str)
 		return (NULL);
 	arr = alloc_array(str, c);

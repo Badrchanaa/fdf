@@ -19,6 +19,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdint.h>
 
 # if BUFFER_SIZE > SIZE_MAX
 #  define BUFFER_SIZE_OK 0

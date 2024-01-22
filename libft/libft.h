@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <stddef.h>
 # include <stdarg.h>
+# include <stdint.h>
 
 int		ft_atoi(const char *str);
 int		ft_isalnum(int c);

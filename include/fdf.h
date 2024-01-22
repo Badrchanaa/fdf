@@ -13,6 +13,7 @@
 #ifndef FDF_H
 # define FDF_H
 
+# include <X11/Xlib.h>
 # include "mlx.h"
 # include "libft.h"
 # include <limits.h>
@@ -21,11 +22,12 @@
 # include <errno.h>
 # include <string.h>
 # include "math.h"
+# include "keysym.h"
 
-# define WIN_W 1920
-# define WIN_H 1080
-# define WIN_W_MID 920
-# define WIN_H_MID 540
+# define WIN_W 1380 
+# define WIN_H 720
+# define WIN_W_MID (WIN_W / 2)
+# define WIN_H_MID (WIN_H / 2)
 # define WINDOW_TITLE "bchanaa's FdF"
 
 # define INFO_X 35

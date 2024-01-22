@@ -78,7 +78,7 @@ int	print_hex(unsigned int nb, t_flags *fl, bool is_upper)
 	char	*tmp;
 	char	*converted;
 
-	if (nb == 0 && fl->maxw == 0 & fl->minw >= 0)
+	if (nb == 0 && fl->maxw == 0 && fl->minw >= 0)
 		tmp = ft_strdup("");
 	else if (is_upper)
 		tmp = ft_itoa_base(nb, HEX_UPPER);

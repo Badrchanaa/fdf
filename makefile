@@ -3,9 +3,10 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -O3
 LIBFLAGS = -lmlx -framework openGL -framework Appkit -lft -L./libft
-LIB_INCLUDE = -I /usr/local/include
+LINUX_FLAGS = -lft -L./libft -lmlx -L. -lXext -lX11 -lm -lz
+LIB_INCLUDE = -I./
 MY_INCLUDE = -I./include -I./libft
-LIBDIR = /usr/local/lib
+LIBDIR = ./
 VPATH = src
 
 SOURCES = color.c main.c init.c common_utils.c parser.c parse_utils.c draw_utils.c rot_utils.c transform_utils.c event_handlers.c misc.c bline.c
@@ -23,7 +24,7 @@ run:
 	./$(NAME)
 
 $(NAME): $(LIBFT_NAME) $(OBJECTS)
-	$(CC) $(CFLAGS) $(LIB_INCLUDE) $(LIBFLAGS) -L $(LIBDIR) $(OBJECTS) -o $(NAME) 
+	$(CC) $(CFLAGS) $(LIB_INCLUDE) $(OBJECTS) -o $(NAME) $(LINUX_FLAGS)
 
 %.o: %.c $(HEADERS)
 	$(CC) $(CFLAGS) $(MY_INCLUDE) -c $< -o $@
