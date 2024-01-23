@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:03:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/20 20:38:13 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/23 20:50:58 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,38 +89,3 @@ t_point	**parse_landscape(char *filename, t_data *data)
 	return (data->map);
 }
 
-// int main2()
-// {
-// 	t_point **matrix;
-// 	int		height;
-// 	int		width;
-// 	int		x;
-
-// 	height = 0;
-// 	width = 0;
-// 	matrix = parse_landscape("test_maps/42.fdf", &width, &height);
-// 	int y = 0;
-// 	printf("height: %d\n", height);
-// 	printf("width: %d\n", width);
-// 	while (y < height)
-// 	{
-// 		x = 0;
-// 		while (x < width)
-// 		{
-// 			t_point *pt = matrix[(y * width) + x];
-// 			printf("x: %d y: %d z: %d c: %d\n", pt->x, pt->y, pt->z, pt->color);
-// 			x++;
-// 		}
-// 		y++;
-// 	}
-// 	printf("total points: %d (bytes: %lu)\n", width * height, 
-// 						sizeof(t_point *) * ( width * height + 1));
-// 	free_2darray((void **)matrix, true);
-// 	return (0);
-// }
-
-// int main()
-// {
-// 	main2();
-// 	return (0);
-// }

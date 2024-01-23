@@ -25,28 +25,29 @@ NAME = fdf
 all: $(NAME)
 
 bonus: $(NAME)
-	
 
 $(NAME): $(LIBFT_NAME) $(OBJECTS)
+	@echo "$(GREEN)Compiling $(BOLD)fdf$(RESET)$(GREEN)...$(RESET)"
 	@$(CC) $(CFLAGS) $(MLX_INCLUDE) $(LIBS) -L $(LIBDIR) $(OBJECTS) -o $(NAME)
 	@echo "$(GREEN)$(BOLD)$(NAME)$(RESET)$(GREEN) compiled successfuly!$(RESET)"
 
 $(OBJECTS_DIR)/%.o: %.c $(HEADERS)
-	@echo "$(GREEN)Compiling $(BOLD)$(NAME)$(RESET)$(GREEN) project...$(RESET)"
-	$(CC) $(CFLAGS) $(FDF_INCLUDE) -c $< -o $@
+	@$(CC) $(CFLAGS) $(FDF_INCLUDE) -c $< -o $@
 
 $(LIBFT_NAME):
-	@echo "$(GREEN)	Compiling $(BOLD)libft$(RESET)$(GREEN)...$(RESET)"
+	@echo "$(GREEN)Compiling $(BOLD)libft$(RESET)$(GREEN)...$(RESET)"
 	@make --silent --directory $(LIBFT_DIR) bonus
 	@make --silent --directory $(LIBFT_DIR) clean
-	@echo "$(GREEN)	Libft compiled successfuly!$(RESET)"
+	@echo "$(GREEN)Libft compiled successfuly!$(RESET)"
 
 clean:
-	rm -f $(OBJECTS)
+	@rm -f $(OBJECTS)
+	@echo "$(GREEN)Object files deleted.$(RESET)"
 
 fclean: clean
-	rm -f $(NAME)
-	make --directory $(LIBFT_DIR) fclean
+	@rm -f $(NAME)
+	@make --silent --directory $(LIBFT_DIR) fclean
+	@echo "$(GREEN)Binary files deleted.$(RESET)"
 
 re: fclean all
 
