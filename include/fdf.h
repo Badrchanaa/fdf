@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:14:23 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/23 15:27:54 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/24 15:09:55 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 
 # define WIN_W 1920
 # define WIN_H 1080
-# define WIN_W_MID (WIN_W / 2)
-# define WIN_H_MID (WIN_H / 2)
+# define WIN_W_MID 960 
+# define WIN_H_MID 540 
 # define WINDOW_TITLE "bchanaa's FdF"
 
 # define INFO_X 35

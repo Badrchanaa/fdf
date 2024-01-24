@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 23:03:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/23 20:50:58 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/24 15:10:25 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,3 @@ t_point	**parse_landscape(char *filename, t_data *data)
 	ft_lstclear(&lst, free);
 	return (data->map);
 }
-
