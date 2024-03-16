@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/14 22:24:46 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/20 19:07:02 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/22 19:19:08 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	handle_key_press(int keycode, t_data *data)
 	bool	should_render;
 
 	should_render = true;
+	if (data->is_locked)
+		return (0);
 	if (keycode == XK_Escape)
 		close_window(data);
 	else if (keycode == XK_Right || keycode == XK_Left || keycode == XK_Up || keycode == XK_Down)

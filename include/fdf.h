@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:14:23 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/20 19:31:33 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/22 18:50:50 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "math.h"
 # include "keysym.h"
 
-# define WIN_W 1380 
+# define WIN_W 1380
 # define WIN_H 720
 # define WIN_W_MID (WIN_W / 2)
 # define WIN_H_MID (WIN_H / 2)
@@ -108,6 +108,7 @@ typedef struct s_data
 	bool		projection;
 	bool		is_dragging;
 	bool		has_color;
+	volatile bool		is_locked;
 }				t_data;
 
 t_point			*parse_point(char *s, int x, int y, t_data *data);

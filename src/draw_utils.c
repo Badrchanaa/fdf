@@ -6,7 +6,7 @@
 /*   By: bchanaa <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 20:51:03 by bchanaa           #+#    #+#             */
-/*   Updated: 2024/01/20 19:05:20 by bchanaa          ###   ########.fr       */
+/*   Updated: 2024/01/22 17:40:39 by bchanaa          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int	render(t_data *data)
 	t_line_vars	v;
 
 	i = 0;
+	data->is_locked = true;
 	clear_image(data);
 	map = data->map;
 	while (map[i])
@@ -109,5 +110,6 @@ int	render(t_data *data)
 	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	draw_info(data);
 	draw_usage_info(data);
+	data->is_locked = false;
 	return (0);
 }
